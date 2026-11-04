@@ -5,7 +5,7 @@
 ## Models
 | Component | Model | Inputs | Output |
 |---|---|---|---|
-| RUL (served) | scikit-learn HistGradientBoostingRegressor (300 iters) + P10/P90 quantile models | 126 causal features (15 sensors × rolling mean/std 5 & 15, 15-cycle slope, EWM) + cycle | RUL (cycles, capped at 125) + band |
+| RUL (served) | scikit-learn HistGradientBoostingRegressor (300 iters) + P10/P90 quantile models | 106 causal features: 15 sensors × (value, rolling mean/std over 5 & 15 cycles, 15-cycle slope, EWM) + cycle | RUL (cycles, capped at 125) + band |
 | RUL (comparison) | 1D-CNN (3 conv layers, PyTorch), 30-cycle window | per-regime normalised sensors | RUL |
 | Health risk | Isolation Forest on healthy cycles → causal EWM → Platt calibration | 15-cycle sensor means | P(failure within 30 cycles) |
 | Alarm | k-of-n policy on predicted RUL, tuned on calibration engines with costs (missed failure 100, false alarm 10) | predicted RUL | alarm on/off |
