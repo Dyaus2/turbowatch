@@ -4,7 +4,7 @@ import { useReplay } from "./replay";
 import { Panel } from "./ui";
 
 interface Citation { n: number; id: string; source: string; title: string; page: number; url: string; snippet: string }
-interface CopilotResp { answer: string; citations: Citation[]; mode: "llm" | "template" | "refusal"; facts?: string }
+interface CopilotResp { answer: string; citations: Citation[]; mode: "llm" | "template" | "refusal"; facts?: string; cycle?: number }
 
 const SUGGESTED = [
   "What should be inspected during a hot section inspection?",
@@ -63,7 +63,7 @@ export function CopilotPanel({ unit }: { unit: number }) {
   };
   const runExplain = async () => {
     setBusy(true); setErr(null);
-    try { setExplain(await post(`/api/copilot/explain/${unit}?cycle=${cycle}`)); setExplainAt(cycle); } catch (e) { setErr(String(e)); } finally { setBusy(false); }
+    try { const r = await post(`/api/copilot/explain/${unit}?cycle=${cycle}`); setExplain(r); setExplainAt(r.cycle ?? cycle); } catch (e) { setErr(String(e)); } finally { setBusy(false); }
   };
   const ask = async (question: string) => {
     if (question.trim().length < 3) return;
@@ -88,7 +88,7 @@ export function CopilotPanel({ unit }: { unit: number }) {
           </button>
           {explain && (
             <div className="mt-3">
-              <div className="mb-2 flex items-center justify-between text-[11px] text-slate-500"><span>state at cycle {explainAt}</span><ModeTag mode={explain.mode} /></div>
+              <div className="mb-2 flex items-center justify-between text-[11px] text-slate-500"><span>engine state at cycle {explainAt}</span><ModeTag mode={explain.mode} /></div>
               <WithCitations text={explain.answer} cites={explain.citations} />
               <Sources cites={explain.citations} />
             </div>

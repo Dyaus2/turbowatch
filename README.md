@@ -7,7 +7,9 @@
 ![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dyaus2/turbowatch/blob/main/notebooks/turbowatch_colab.ipynb)
 
-> Live demo: *in progress (milestone 2 — dashboard + Hugging Face Space).*
+> Live demo: *Hugging Face Space — deployment pending (see below to run it locally in one command).*
+
+![TurboWatch demo: the fleet degrades during replay, alarms appear, an engine is opened and the copilot explains the alarm with cited FAA guidance](docs/img/demo.gif)
 
 ## Why it matters
 Unplanned engine removals are among the most expensive events in airline and defence operations. Fixed-interval maintenance replaces parts too early or too late. TurboWatch shows the core of a condition-based maintenance system:

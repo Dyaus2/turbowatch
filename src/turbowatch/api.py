@@ -198,7 +198,7 @@ def copilot_explain(unit: int, cycle: int | None = Query(None, ge=1)):
         raise HTTPException(404, f"engine {unit} has no data up to cycle {cycle}")
     snap = next(e for e in f.snapshot(int(rows["cycle"].iloc[-1])) if e["unit"] == unit)
     factors = f.pred.explain_row(f.X.loc[[rows.index[-1]]], 6)["factors"]
-    return copilot().explain_alarm(snap, factors)
+    return {**copilot().explain_alarm(snap, factors), "cycle": snap["cycle"]}
 
 
 @app.get("/api/replay/stream")
