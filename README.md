@@ -7,7 +7,9 @@
 ![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dyaus2/turbowatch/blob/main/notebooks/turbowatch_colab.ipynb)
 
-> Live demo: *Hugging Face Space — deployment pending (see below to run it locally in one command).*
+[![Static demo](https://github.com/Dyaus2/turbowatch/actions/workflows/pages.yml/badge.svg)](https://github.com/Dyaus2/turbowatch/actions/workflows/pages.yml)
+
+> **Live demo: [dyaus2.github.io/turbowatch](https://dyaus2.github.io/turbowatch/)** — a static build that runs with no server. The dashboard replays the Python pipeline's exported outputs. The parity test checks them against real API responses on every push. The copilot runs entirely in your browser (int8 ONNX models via transformers.js; the first copilot use downloads ~58 MB). The full FastAPI version runs from the Docker one-liner below.
 
 ![TurboWatch demo: the fleet degrades during replay, alarms appear, an engine is opened and the copilot explains the alarm with cited FAA guidance](docs/img/demo.gif)
 
@@ -37,7 +39,7 @@ Evaluation protocol: training engines are split **by engine** into fit (70%) / c
 What did **not** work (kept in the table on purpose): the autoencoder health score separates degraded from healthy cycles poorly, and its cost-optimal policy alarms on every engine; the Isolation Forest risk is better calibrated (Brier 0.059) but detects only 62% of test failures, because test engines are cut before failure and the smoothed risk reacts late. The P10–P90 RUL band covers the truth in 66% of test engines (nominal 80%) — the quantile models are over-confident.
 
 ## Maintenance copilot (GenAI, grounded)
-The engine page has an **"Explain this engine"** button and an **"Ask the manuals"** chat. Both retrieve passages from public FAA/NASA documents (FAA powerplant handbook turbine chapters, AC 120-17B, AC 120-16G, the NASA C-MAPSS paper; see [`docs/SOURCES.md`](docs/SOURCES.md)) and answer **with citations to the exact page**. Retrieval = bge-small dense + BM25 fused by reciprocal rank fusion, then a MiniLM cross-encoder rerank. The copilot **refuses** when the reranker finds nothing relevant. An LLM (Groq, `GROQ_API_KEY`) writes the answer when a key is configured; otherwise a template answer quotes the retrieved sentences. Decision support only.
+The engine page has an **"Explain this engine"** button and an **"Ask the manuals"** chat. Both retrieve passages from public FAA/NASA documents (FAA powerplant handbook turbine chapters, AC 120-17B, AC 120-16G, the NASA C-MAPSS paper; see [`docs/SOURCES.md`](docs/SOURCES.md)) and answer **with citations to the exact page**. Retrieval = bge-small dense + BM25 fused by reciprocal rank fusion, then a MiniLM cross-encoder rerank. The copilot **refuses** when the reranker finds nothing relevant. An LLM (Groq, `GROQ_API_KEY`) writes the answer when a key is configured; otherwise a template answer quotes the retrieved sentences. In the static demo, visitors can paste their own Groq or xAI key. It is kept in the tab's memory and sent only to the provider. No key is ever shipped in the page. Decision support only.
 
 Evaluation on 26 questions written from the documents + 4 out-of-scope questions ([`results/COPILOT.md`](results/COPILOT.md), `scripts/eval_copilot.py`):
 
@@ -49,6 +51,8 @@ Evaluation on 26 questions written from the documents + 4 out-of-scope questions
 | **hybrid + cross-encoder rerank (production)** | **100%** | **100%** | **1.000** |
 
 Out-of-scope questions refused: 4/4 · gold fact present in the cited passages: 100% · in the template answer text: 69% (the template is extractive; the LLM path is evaluated when a key is available). Small, self-written set — indicative, not a benchmark.
+
+The **in-browser copilot** of the static demo (TypeScript port of the retrieval + answer code, int8 ONNX models) gets the same results on the same questions: hybrid+rerank hit@1 100%, MRR 1.000, 4/4 out-of-scope refused, 100% citation validity ([`results/COPILOT_BROWSER.md`](results/COPILOT_BROWSER.md), `frontend/scripts/eval_copilot.ts`).
 
 ## Architecture
 ```mermaid
@@ -64,7 +68,7 @@ flowchart LR
   J[FAA / NASA public docs] --> K[bge-small + BM25 → RRF → cross-encoder]
   K --> L[Copilot: cited answers<br/>Groq LLM or template]
   H --> L
-  I & L --> M[React dashboard<br/>Hugging Face Space]
+  I & L --> M[React dashboard<br/>Docker · or static on GitHub Pages]
   N[PSI drift monitor] --> O[Champion / challenger retraining]
 ```
 
@@ -84,6 +88,13 @@ C-MAPSS cycles ─► validation ─► per-regime normalisation (KMeans on oper
 Every run is logged to MLflow (`mlruns/`, SQLite store).
 
 ## Run it
+**Docker (full app: API + dashboard + copilot):**
+```bash
+docker build -t turbowatch . && docker run -p 7860:7860 turbowatch   # then open http://localhost:7860
+```
+CI builds this image and smoke-tests the running container on every push. Set `-e GROQ_API_KEY=...` for LLM-written copilot answers.
+
+**Local development:**
 ```bash
 pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt -r requirements-dev.txt && pip install -e . --no-deps
@@ -95,6 +106,14 @@ uvicorn turbowatch.api:app --port 7860                      # API + dashboard on
 python scripts/build_corpus.py && python scripts/eval_copilot.py   # rebuild copilot corpus + evaluation
 mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db    # experiment tracking
 ```
+**Static demo (no server):**
+```bash
+python scripts/export_static.py                  # model outputs + SHAP + corpus -> frontend/static-data, and a parity fixture of real API responses
+cd frontend && node scripts/embed_corpus.ts      # corpus embeddings with the browser model
+node scripts/eval_copilot.ts                     # evaluates the in-browser copilot -> results/COPILOT_BROWSER.md
+npm run test:parity && npm run build:static      # static API must reproduce the recorded API responses; output in frontend/dist
+```
+GitHub Pages deploys `frontend/dist` from `.github/workflows/pages.yml`. `scripts/deploy_hf_space.py` deploys the Docker version to a Hugging Face Space (Docker Spaces need a paid plan).
 **Colab (T4 GPU):** [`notebooks/turbowatch_colab.ipynb`](notebooks/turbowatch_colab.ipynb) clones the repo, trains everything (CNN on GPU, 60 epochs, 3 seeds) and plots a test engine with SHAP drivers.
 
 ## Project structure
@@ -111,13 +130,15 @@ src/turbowatch/
   rag.py         copilot: hybrid retrieval + rerank, grounded answers with citations, LLM / template fallback
   api.py         FastAPI backend (fleet, engines, alarms, replay SSE, copilot) + serves the built dashboard
 frontend/        React + TypeScript dashboard (fleet grid/table, engine detail, replay, copilot, how-it-works)
+  src/static/    server-less runtime: fleet API port, copilot port (BM25, RRF, rerank), transformers.js models, Python-exact number formatting
+  scripts/       parity test vs recorded API responses, corpus embedding, in-browser copilot evaluation      static-data/  exported demo data
 data/corpus/     cleaned document chunks + embeddings (public FAA/NASA texts)     data/eval/  copilot Q/A set
-scripts/ train.py, make_results.py, build_corpus.py, eval_copilot.py, drift_scenario.py     tests/ unit, leakage, pipeline, API, copilot
+scripts/ train.py, make_results.py, build_corpus.py, eval_copilot.py, drift_scenario.py, export_static.py, deploy_hf_space.py     tests/ unit, leakage, pipeline, API, copilot
 results/ RESULTS.md, summary.json, runs/*.json     artifacts/FD001/ serving bundle (3 MB)
 ```
 
 ## Tech stack
-Python 3.13 · pandas · scikit-learn · PyTorch · SHAP · MLflow · FastAPI · sentence-transformers (bge-small, MiniLM cross-encoder) · BM25 · Groq LLM API · React 19 + TypeScript + Tailwind 4 + Recharts · Docker · Hugging Face Spaces · pytest · ruff · GitHub Actions.
+Python 3.13 · pandas · scikit-learn · PyTorch · SHAP · MLflow · FastAPI · sentence-transformers (bge-small, MiniLM cross-encoder) · BM25 · Groq LLM API · React 19 + TypeScript + Tailwind 4 + Recharts · transformers.js / ONNX Runtime Web · Docker · GitHub Pages · pytest · ruff · GitHub Actions.
 
 ## Limitations
 - C-MAPSS is **simulated** data with a single, fixed failure definition; real fleets have maintenance actions, sensor faults and censoring.

@@ -1,4 +1,4 @@
-import type { MetricsResp } from "./api";
+import { STATIC, type MetricsResp } from "./api";
 import { useLiveJSON } from "./replay";
 import { Panel } from "./ui";
 
@@ -8,7 +8,9 @@ const STEPS = [
   { t: "Causal features", d: "Rolling mean/std (5, 15), 15-cycle slope, EWM — row t only sees cycles ≤ t. Same code at train & serve time." },
   { t: "Models", d: "Gradient boosting RUL + P10/P90 quantiles · 1D-CNN (PyTorch) · Isolation Forest / autoencoder health score." },
   { t: "Calibrate & decide", d: "Platt-calibrated risk of failure ≤ 30 cycles · k-of-n alarm policy tuned on a cost matrix." },
-  { t: "Explain & serve", d: "Exact TreeSHAP drivers · FastAPI · React dashboard with live replay." },
+  { t: "Explain & serve", d: STATIC
+    ? "Exact TreeSHAP drivers · React dashboard with live replay. This static demo replays the Python pipeline's exported outputs; the copilot runs in your browser."
+    : "Exact TreeSHAP drivers · FastAPI · React dashboard with live replay." },
 ];
 
 export function HowItWorks() {
@@ -99,10 +101,24 @@ function CopilotMetrics({ data }: { data: MetricsResp | null }) {
           <li>Gold fact present in cited passages: <b className="mono">{pct(c.key_fact_in_cited_passages)}</b></li>
           <li>Gold fact present in the answer text ({String(c.answer_mode)} mode): <b className="mono">{pct(c.key_fact_in_answer)}</b></li>
           <li>Answer sentences supported by cited passages: <b className="mono">{pct(c.sentence_support)}</b></li>
+          {STATIC && <BrowserCopilotNote data={data} />}
           <li className="text-xs text-slate-500">Hybrid = bge-small dense + BM25 with reciprocal rank fusion; rerank = MiniLM cross-encoder on the top 20. Documents: FAA powerplant handbook (turbine chapters), FAA AC 120-17B & 120-16G, NASA C-MAPSS paper.</li>
         </ul>
       </div>
     </Panel>
+  );
+}
+
+function BrowserCopilotNote({ data }: { data: MetricsResp | null }) {
+  const b = (data as unknown as { copilot_browser?: { retrieval: Ret; out_of_scope_refused: number; runtime: string } | null } | null)?.copilot_browser;
+  if (!b) return null;
+  const r = b.retrieval["hybrid+rerank"];
+  return (
+    <li className="rounded-md border border-cyan-500/30 bg-cyan-500/5 p-2 text-xs">
+      <b>This demo's in-browser copilot</b> (int8 ONNX models, transformers.js) on the same questions: hybrid+rerank hit@1{" "}
+      <b className="mono">{Math.round(r["hit@1"] * 100)}%</b>, MRR@10 <b className="mono">{r["mrr@10"].toFixed(3)}</b>, out-of-scope refused{" "}
+      <b className="mono">{Math.round(b.out_of_scope_refused * 100)}%</b>. The table shows the Python server version.
+    </li>
   );
 }
 

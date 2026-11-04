@@ -1,10 +1,11 @@
-import { Bot, FileText, Send, Sparkles } from "lucide-react";
+import { Bot, FileText, KeyRound, Send, Sparkles } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
+import { apiPost, STATIC } from "./api";
 import { useReplay } from "./replay";
 import { Panel } from "./ui";
 
 interface Citation { n: number; id: string; source: string; title: string; page: number; url: string; snippet: string }
-interface CopilotResp { answer: string; citations: Citation[]; mode: "llm" | "template" | "refusal"; facts?: string; cycle?: number }
+interface CopilotResp { answer: string; citations: Citation[]; mode: "llm" | "template" | "refusal"; facts?: string; cycle?: number; llm_error?: string }
 
 const SUGGESTED = [
   "What should be inspected during a hot section inspection?",
@@ -40,7 +41,7 @@ function Sources({ cites }: { cites: Citation[] }) {
 }
 
 function ModeTag({ mode }: { mode: CopilotResp["mode"] }) {
-  const label = mode === "llm" ? "LLM · grounded" : mode === "template" ? "template (no LLM key)" : "refused";
+  const label = mode === "llm" ? "LLM · grounded" : mode === "template" ? "template · no LLM" : "refused";
   return <span className="rounded-full border border-slate-300 px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-500 dark:border-slate-700">{label}</span>;
 }
 
@@ -54,13 +55,11 @@ export function CopilotPanel({ unit }: { unit: number }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
+  const loading = useModelProgress(busy);
+
   useEffect(() => { setExplain(null); setExplainAt(null); }, [unit]);
 
-  const post = async (url: string, body?: unknown): Promise<CopilotResp> => {
-    const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
-    if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-    return r.json();
-  };
+  const post = (url: string, body?: unknown) => apiPost<CopilotResp>(url, body);
   const runExplain = async () => {
     setBusy(true); setErr(null);
     try { const r = await post(`/api/copilot/explain/${unit}?cycle=${cycle}`); setExplain(r); setExplainAt(r.cycle ?? cycle); } catch (e) { setErr(String(e)); } finally { setBusy(false); }
@@ -84,7 +83,7 @@ export function CopilotPanel({ unit }: { unit: number }) {
       {tab === "explain" ? (
         <div>
           <button onClick={runExplain} disabled={busy} className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-500 px-3 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-400 disabled:opacity-60">
-            <Sparkles size={15} /> {busy ? "Thinking…" : explain ? `Re-explain at cycle ${cycle}` : `Explain engine #${unit} at cycle ${cycle}`}
+            <Sparkles size={15} /> {busy ? (loading ?? "Thinking…") : explain ? `Re-explain at cycle ${cycle}` : `Explain engine #${unit} at cycle ${cycle}`}
           </button>
           {explain && (
             <div className="mt-3">
@@ -106,7 +105,7 @@ export function CopilotPanel({ unit }: { unit: number }) {
               {SUGGESTED.map((s) => <button key={s} onClick={() => ask(s)} className="rounded-full border border-slate-300 px-2.5 py-1 text-left text-[11px] text-slate-500 hover:border-cyan-500 hover:text-cyan-500 dark:border-slate-700">{s}</button>)}
             </div>
           )}
-          {busy && <p className="mt-3 text-sm text-slate-500">Searching the documents…</p>}
+          {busy && <p className="mt-3 text-sm text-slate-500">{loading ?? "Searching the documents…"}</p>}
           {ans && !busy && (
             <div className="mt-3">
               <div className="mb-2 flex justify-end"><ModeTag mode={ans.mode} /></div>
@@ -117,7 +116,85 @@ export function CopilotPanel({ unit }: { unit: number }) {
         </div>
       )}
       {err && <p className="mt-2 text-xs text-red-500">{err}</p>}
-      <p className="mt-3 text-[10px] leading-snug text-slate-500">Decision support only — answers are grounded in public FAA/NASA documents and are not approved maintenance data. Always follow the manufacturer's manuals.</p>
+      {(tab === "explain" ? explain : ans)?.llm_error && <p className="mt-2 text-xs text-amber-500">{(tab === "explain" ? explain : ans)?.llm_error}</p>}
+      {STATIC && <KeySettings />}
+      <p className="mt-3 text-[10px] leading-snug text-slate-500">{STATIC && "Runs in your browser: retrieval models (~58 MB) download once on first use. "}Decision support only — answers are grounded in public FAA/NASA documents and are not approved maintenance data. Always follow the manufacturer's manuals.</p>
     </Panel>
+  );
+}
+
+/** Static build only: progress of the one-time model download, as a short label (null when not downloading). */
+function useModelProgress(active: boolean): string | null {
+  const [p, setP] = useState<{ loaded: number; total: number } | null>(null);
+  useEffect(() => {
+    if (!STATIC || !active) return;
+    let off = () => {};
+    import("./static/runtime").then((m) => { off = m.onModelProgress(setP); });
+    return () => off();
+  }, [active]);
+  if (!STATIC || !active || !p || p.loaded >= p.total) return null;
+  return `Downloading retrieval models ${Math.round(p.loaded / 1e6)} / ${Math.round(p.total / 1e6)} MB (first use only)…`;
+}
+
+/** Static build only: optional bring-your-own LLM key, kept in memory for this tab and sent only to the provider. */
+function KeySettings() {
+  const [open, setOpen] = useState(false);
+  const [provider, setProvider] = useState<"groq" | "xai">("groq");
+  const [key, setKey] = useState("");
+  const [models, setModels] = useState<string[]>([]);
+  const [model, setModel] = useState("");
+  const [state, setState] = useState<string | null>(null);
+  const [active, setActive] = useState(false);
+
+  const connect = async () => {
+    const rt = await import("./static/runtime");
+    setState("Checking key…");
+    try {
+      const list = await rt.listModels(provider, key.trim());
+      const pref = rt.PROVIDERS[provider].preferred;
+      const chosen = model && list.includes(model) ? model : pref && list.includes(pref) ? pref : list[0] ?? "";
+      setModels(list); setModel(chosen);
+      rt.setLLMConfig({ provider, key: key.trim(), model: chosen });
+      setActive(!!chosen); setState(chosen ? null : "No models available for this key");
+    } catch (e) { rt.setLLMConfig(null); setActive(false); setState(String((e as Error).message ?? e)); }
+  };
+  const pick = async (m: string) => {
+    setModel(m);
+    (await import("./static/runtime")).setLLMConfig({ provider, key: key.trim(), model: m });
+  };
+  const clear = async () => {
+    (await import("./static/runtime")).setLLMConfig(null);
+    setKey(""); setModels([]); setModel(""); setActive(false); setState(null);
+  };
+
+  return (
+    <div className="mt-3 rounded-lg border border-dashed border-slate-300 p-2 text-xs dark:border-slate-700">
+      <button onClick={() => setOpen(!open)} className="inline-flex items-center gap-1.5 text-slate-500 hover:text-cyan-500">
+        <KeyRound size={12} /> {active ? `LLM answers on · ${model}` : "Optional: use your own LLM key for written answers"}
+      </button>
+      {open && (
+        <div className="mt-2 space-y-2">
+          <div className="flex gap-2">
+            <select value={provider} onChange={(e) => { setProvider(e.target.value as "groq" | "xai"); setModels([]); setActive(false); }}
+              aria-label="LLM provider" className="rounded border border-slate-300 bg-transparent px-1.5 py-1 dark:border-slate-700">
+              <option value="groq">Groq</option><option value="xai">xAI (Grok)</option>
+            </select>
+            <input type="password" value={key} onChange={(e) => setKey(e.target.value)} placeholder="API key" autoComplete="off" spellCheck={false}
+              aria-label="API key" className="min-w-0 flex-1 rounded border border-slate-300 bg-transparent px-2 py-1 dark:border-slate-700" />
+            <button onClick={connect} disabled={key.trim().length < 8} className="rounded bg-cyan-500 px-2 font-semibold text-slate-950 disabled:opacity-50">Use</button>
+          </div>
+          {models.length > 0 && (
+            <div className="flex items-center gap-2">
+              <select value={model} onChange={(e) => pick(e.target.value)} aria-label="Model" className="min-w-0 flex-1 rounded border border-slate-300 bg-transparent px-1.5 py-1 dark:border-slate-700">
+                {models.map((m) => <option key={m} value={m}>{m}</option>)}
+              </select>
+              <button onClick={clear} className="text-slate-500 underline">forget key</button>
+            </div>
+          )}
+          {state && <p className="text-amber-500">{state}</p>}
+          <p className="text-[10px] leading-snug text-slate-500">The key stays in this tab's memory (gone on reload) and is sent only to the provider's API. Without a key the copilot uses extractive template answers.</p>
+        </div>
+      )}
+    </div>
   );
 }

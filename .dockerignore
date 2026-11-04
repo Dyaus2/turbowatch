@@ -9,3 +9,5 @@ mlartifacts/
 .ruff_cache
 notebooks/
 tests/
+frontend/static-data/
+frontend/scripts/parity_fixture.json

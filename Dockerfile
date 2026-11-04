@@ -1,4 +1,4 @@
-# TurboWatch — single image serving the FastAPI backend + built React dashboard (Hugging Face Space, Docker SDK)
+# TurboWatch — single image serving the FastAPI backend + built React dashboard (any container host, e.g. a Hugging Face Docker Space)
 FROM node:22-slim AS ui
 WORKDIR /ui
 COPY frontend/package.json frontend/package-lock.json ./

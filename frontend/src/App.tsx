@@ -1,6 +1,6 @@
 import { BookOpen, Gauge, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { Meta } from "./api";
+import { STATIC, type Meta } from "./api";
 import { CopilotPanel } from "./CopilotPanel";
 import { EngineDetail } from "./EngineDetail";
 import { FleetView } from "./FleetView";
@@ -53,7 +53,7 @@ export default function App() {
       <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/85 backdrop-blur dark:border-slate-800 dark:bg-[#070b14]/85">
         <div className="mx-auto flex max-w-[1500px] flex-wrap items-center gap-3 px-4 py-2.5">
           <a href="#/" className="flex items-center gap-2">
-            <img src="/favicon.svg" alt="" className="h-7 w-7" />
+            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" className="h-7 w-7" />
             <span className="font-semibold tracking-tight">TurboWatch</span>
             <span className="hidden text-xs text-slate-500 sm:inline">Fleet health & predictive maintenance</span>
           </a>
@@ -69,7 +69,7 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-[1500px] space-y-4 px-4 py-4">
-        {error && !meta && <div className="panel p-6 text-red-500">Cannot reach the API: {error}</div>}
+        {error && !meta && <div className="panel p-6 text-red-500">{STATIC ? "Could not load the demo data" : "Cannot reach the API"}: {error}</div>}
         {!meta && !error && <div className="panel p-6 text-slate-500">Loading models…</div>}
         {meta && (
           <ReplayProvider maxCycle={meta.max_cycle}>

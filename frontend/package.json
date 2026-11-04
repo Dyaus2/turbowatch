@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:static": "tsc -b && vite build --mode static && node -e \"require('fs').cpSync('static-data','dist/data',{recursive:true})\"",
+    "test:parity": "node scripts/parity.ts"
   },
   "dependencies": {
+    "@huggingface/transformers": "4.3.1",
     "lucide-react": "1.68.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
@@ -16,6 +19,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.4",
+    "@types/node": "22.20.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "5.2.0",

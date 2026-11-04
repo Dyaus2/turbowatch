@@ -1,3 +1,4 @@
+import { apiGet } from "./api";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 interface ReplayCtx {
@@ -57,10 +58,9 @@ export function useLiveJSON<T>(url: string | null): { data: T | null; error: str
   useEffect(() => {
     if (!url) return;
     const ac = new AbortController();
-    fetch(url, { signal: ac.signal })
-      .then((r) => { if (!r.ok) throw new Error(`${r.status} ${r.statusText}`); return r.json(); })
-      .then((j) => { setData(j as T); setError(null); })
-      .catch((e: unknown) => { if ((e as Error).name !== "AbortError") setError(String(e)); });
+    apiGet<T>(url, ac.signal)
+      .then((j) => { if (!ac.signal.aborted) { setData(j); setError(null); } })
+      .catch((e: unknown) => { if ((e as Error).name !== "AbortError" && !ac.signal.aborted) setError(String(e)); });
     return () => ac.abort();
   }, [url]);
   return { data, error };

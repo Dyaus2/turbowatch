@@ -1,0 +1,375 @@
+{
+  "runtime": "transformers.js (ONNX Runtime), Xenova/bge-small-en-v1.5 + Xenova/ms-marco-MiniLM-L-6-v2, dtype q8",
+  "query_prefix": "Represent this sentence for searching relevant passages: ",
+  "n_questions": 30,
+  "n_in_scope": 26,
+  "n_out_of_scope": 4,
+  "answer_mode": "template",
+  "retrieval": {
+    "dense": {
+      "hit@1": 0.8076923076923077,
+      "hit@3": 0.8846153846153846,
+      "hit@5": 0.9615384615384616,
+      "mrr@10": 0.8487179487179486
+    },
+    "bm25": {
+      "hit@1": 0.8461538461538461,
+      "hit@3": 0.9615384615384616,
+      "hit@5": 1,
+      "mrr@10": 0.9134615384615384
+    },
+    "hybrid": {
+      "hit@1": 0.8076923076923077,
+      "hit@3": 0.9230769230769231,
+      "hit@5": 0.9615384615384616,
+      "mrr@10": 0.874084249084249
+    },
+    "hybrid+rerank": {
+      "hit@1": 1,
+      "hit@3": 1,
+      "hit@5": 1,
+      "mrr@10": 1
+    }
+  },
+  "refusal_threshold_rerank_logit": 0,
+  "top_rerank_in_scope_min": 1.976640224456787,
+  "top_rerank_out_of_scope_max": -9.676529884338379,
+  "in_scope_answered": 1,
+  "out_of_scope_refused": 1,
+  "key_fact_in_answer": 0.6923076923076923,
+  "key_fact_in_cited_passages": 1,
+  "citations_valid": 1,
+  "sentence_support": 1,
+  "answers": [
+    {
+      "q": "What does FOD stand for and what typically causes it on the ground?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": false,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "Debris from the runway or ramp cause FOD on the ground. [1] At normal operating temperature, the diameter of a choke-ground cylinder is uniform throughout. [4] Also inspect the combustion chamber outlet ducts and turbine nozzle for cracks and for evidence of FOD. [2]"
+    },
+    {
+      "q": "What are the four types of gas turbine engines used to propel and power aircraft?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": false,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "Four types of gas turbine engines are used to propel and power aircraft. [2] types of gas turbine engines are used to propel and power aircraft. [1] The term “ turbojet” was used to describe any gas turbine engine used in aircraft. [1]"
+    },
+    {
+      "q": "Why do almost all airliners use turbofan engines rather than pure turbojets?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": false,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "So, almost all airliner-type aircraft use a turbofan engine. [1] Due to these problems, use of pure turbojet engines is very limited. [1] Turbofan engines have more than one shaft in the engine; many are two-shaft engines. [1]"
+    },
+    {
+      "q": "What does the low-pressure spool of a two-spool turbofan contain?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "In a two-spool engine, there is a high-pressure spool and a lowpressure spool. [1] Most large turbofan engines use a large fan with a few stages of compression called the low-pressure spool. [2] Most turbofan engines have two spools: low pressure (fan shaft a few stages of compression and the turbine to drive it) and high pressure (high pressure compressor shaft and high pressure turbine). [3]"
+    },
+    {
+      "q": "What is one of the most frequent discrepancies found when inspecting the hot section of a turbine engine?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "One of the most frequent discrepancies that are detected while inspecting the hot section of a turbine engine is cracking. [1] The inspection and repair procedures for the hot section of any one gas turbine engine share similarities to those of other gas turbine engines. [3] Exhaust Section The exhaust section of the turbine engine is susceptible to heat cracking. [3]"
+    },
+    {
+      "q": "During a hot section inspection, what should be checked on the first stage turbine blades and nozzle guide vanes?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "Turbine Nozzle Inlet Guide Vane Inspection After removing the required components, the first stage turbine blades and turbine nozzle vanes are accessible [3] [Figure 10-63] Inspect the first stage turbine blades and nozzle guide vanes for cracks, warping, or FOD. [1] The following are general procedures for performing a hot section (turbine and combustion section) inspection. [2]"
+    },
+    {
+      "q": "What can happen if the fuel quantity becomes excessive in relation to the mass airflow through the engine?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "If the quantity of fuel becomes excessive in relation to mass airflow through the engine, the limiting temperature of the turbine blades can be exceeded, or it will produce compressor stall and a condition referred to as rich blowout. [1] The increase in density causes the mass flow through the engine to increase. [3] Therefore, the thrust of the engine must be equal to the force required to accel"
+    },
+    {
+      "q": "What is a rich blowout?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "However, if the fuel flow increases too rapidly, an over rich mixture can be produced, with the possibility of a rich blowout or compressor stall. [2] Rich blowout occurs when the amount of oxygen in the air supply is insufficient to support combustion and when the mixture is cooled below the combustion temperature by the excess fuel. [1] If the quantity of fuel becomes excessive in relation to ma"
+    },
+    {
+      "q": "What does a higher exhaust gas temperature (EGT) mean for the energy delivered to the turbine?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "A higher EGT corresponds to a larger amount of energy to the turbine so it can turn the compressor faster. [1] The temperature of the gases as they leave the cylinder of a reciprocating engine or the turbine of a gas turbine engine. [4] So, to make the engine highly efficient, the exhaust temperatures need to be as high as possible, while maintaining an EGT operating temperature that does not dama"
+    },
+    {
+      "q": "How are the high and low pressure spools of a two-spool turbofan referred to on the tachometers?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "Turbofan engines with two spools or separate shafts, high pressure and low pressure spools, are generally referred to as N1 and N2, with each having their own indicator. [1] In a two-spool engine, there is a high-pressure spool and a lowpressure spool. [2] Most turbofan engines have two spools: low pressure (fan shaft a few stages of compression and the turbine to drive it) and high pressure (high"
+    },
+    {
+      "q": "Why are turbine engine tachometers usually calibrated in percent rpm?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "Tachometers are usually calibrated in percent rpm so that various types of engines can be operated on the same basis of comparison. [1] Tachometer Gas turbine engine speeds are measured by the engines rpm, which are also the compressor/turbine combination rpm of each rotating spool. [2] Turboprops are usually fitted with a torquemeter that measures torque applied to a shaft turned by the gas gener"
+    },
+    {
+      "q": "What is the minimum number and type of bearings required to support one shaft?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "The minimum number of bearings required to support one shaft is one deep groove ball bearing (thrust and radial loads) and one straight roller bearing (radial load only). [1] The number of bearings necessary for proper engine support is, for the most part, determined by the length and weight of the engine rotor. [2] Types of main bearings used for gas turbine rotor support. [3]"
+    },
+    {
+      "q": "Why do many newer engines use hydraulic bearings?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": false,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "[Figure 1-76] Many newer engines use hydraulic bearings, in which the outside race is surrounded by a thin film of oil. [1] In general, antifriction bearings are preferred largely because they: [1] The gas turbine rotors are supported by ball and roller bearings, which are antifriction bearings. [1]"
+    },
+    {
+      "q": "What are the benefits and drawbacks of shrouded turbine blades?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": false,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "The shrouded turbine blades, in effect, form a band around the outer perimeter of the turbine wheel. [1] Most turbines are open at the outer perimeter of the blades; however, a second type called the shrouded turbine is sometimes used. [1] On the other hand, it limits turbine speed and requires more blades. [1]"
+    },
+    {
+      "q": "What should be checked if the engine has high exhaust gas temperature at target engine pressure ratio for takeoff?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": false,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "Engine has high exhaust gas temperature at target engine pressure ratio for takeoff. [1] Engine has high rpm, exhaust gas temperature, and fuel flow when set to expect engine pressure ratio. [2] Engine has high exhaust gas temperature, low rpm, and high fuel flow at all engine pressure ratio settings. [2]"
+    },
+    {
+      "q": "Which parameters does an electronic engine control (EEC) sense?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": false,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "An electronic fuel control for a gas turbine engine. [1] The computing section of the FADEC system depends completely on sensor inputs to the electronic engine control (EEC) to meter the fuel flow. [3] By sensing these parameters, the fuel control has a clear picture of what is happening in the engine and can [2]"
+    },
+    {
+      "q": "What is the purpose of an alert level in a reliability program?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "The purpose of an alert level is to identify significant deviations from a previously acceptable standard of performance. [1] Techniques for Determining Deviation From Performance Standards Technique Method Action Driver Reliability Program Requirement Alert-Based Identifies deviations from a defined standard based on previous performance. [2] The purpose of a reliability program is to allow an op"
+    },
+    {
+      "q": "How high or low should a reliability program alert level be set?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "The level should not be set so high that a major increase in the failure rate does not produce an alert, nor so low that the normal distribution of failures results in excessive alerts. [1] The alert level is set so an alert is triggered by an increase in failure rate or scheduled findings to a degree beyond normal variation. [2] Techniques for Determining Deviation From Performance Standards Tech"
+    },
+    {
+      "q": "Are reliability alert levels minimum acceptable airworthiness levels?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "You should recognize that alert levels are not minimum acceptable airworthiness levels, but rather are a means of readily identifying increases in failure rates that fall outside the parameters of what is considered normal performance variation. [1] The purpose of an alert level is to identify significant deviations from a previously acceptable standard of performance. [1] Techniques for Determini"
+    },
+    {
+      "q": "What does advisory circular AC 120-17B provide guidance for?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "GENERAL INFORMATION 1.1 Purpose of This Advisory Circular (AC). [2] 12/19/18 AC 120-17B CHAPTER 1. [2] Department of Transportation Federal Aviation Administration Advisory Circular Subject: Reliability Program Methods— Standards for Determining Time Limitations Date: 12/19/18 AC No: 120-17B Initiated by: AFS-300 Change: This advisory circular (AC) provides guidance for developing and maintaining "
+    },
+    {
+      "q": "How does a reliability program relate to the Continuing Analysis and Surveillance System (CASS)?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": false,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "BACKGROUND OF THE CONTINUING ANALYSIS AND SURVEILLANCE SYSTEM (CASS). [3] 1.7.5 Continuing Analysis and Surveillance System (CASS). [1] As part of an effective Continuing Analysis and Surveillance System (CASS), you continually monitor the performance and effectiveness of your reliability program, and make revisions as necessary. [2]"
+    },
+    {
+      "q": "Under the CASS requirement, how much of the performance standard data is collected and analyzed?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "In compliance with your Continuing Analysis and Surveillance System (CASS) obligation under part 121, § 121.373 to determine effectiveness of your maintenance schedule, 100 percent of your performance standard data is collected and analyzed. [1] Because of this CASS requirement, the concept of sampling may be applied as an effective and efficient tool when analyzing other data types/sets in suppor"
+    },
+    {
+      "q": "What kind of degradation was imposed on flow and efficiency to generate the C-MAPSS run-to-failure data?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "An exponential rate of change for flow and efficiency loss was imposed for each data set, starting at a randomly chosen initial deterioration set point. [1] Efficiency Loss (%) Flow Loss (%) HPC Stall Margin Response Surface - HPC Degradation -0.16 -0.14 -0.12 -0.1 -0.08 -0.06 -0.04 -0.02 0 -0.16 -0.14 -0.12 -0.1 -0.08 -0.06 -0.04 -0.02 0 15 20 25 30 35 Failure Region Figure 7. [2] for a range of "
+    },
+    {
+      "q": "When is the failure criterion reached in the C-MAPSS damage propagation simulation?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "Damage propagation was allowed to continue until a failure criterion was reached. [2] Index Terms —Damage modeling, Prognostics, C-MAPSS, Turbofan engines, Performance Evaluation CONTENTS I. [1] A health index was defined as the minimum of several superimposed operational margins at any given time instant and the failure criterion is reached when health index reaches zero. [1]"
+    },
+    {
+      "q": "Which data competition used the C-MAPSS simulated engine data as challenge data?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "The data generated were used as challenge data for the Prognostics and Health Management (PHM) data competition at PHM’08. [1] Only HPC flow and efficiency modifiers were used to simulate HPC degradation for the challenge data. [2] Index Terms —Damage modeling, Prognostics, C-MAPSS, Turbofan engines, Performance Evaluation CONTENTS I. [1]"
+    },
+    {
+      "q": "What does the C-MAPSS control system's limit regulator prevent at the high-pressure compressor exit?",
+      "in_scope": true,
+      "mode": "template",
+      "key_in_answer": true,
+      "key_in_citations": true,
+      "citations_valid": true,
+      "sentence_support": 1,
+      "refused": false,
+      "answer": "The latter include three high0limit regulators that pre vent the engine from exceeding its design limits for core sp eed, engine0pressure ratio, and High0Pressure Turbine (HPT) exit temperature; a limit regulator that prevents the static pressure at the High0Pressure Compressor (HPC) exit from goi ng too low; and an acceleration and deceleration limiter for the core speed. [1] In addition, the bui"
+    },
+    {
+      "q": "What is the list price of a new CFM56 engine?",
+      "in_scope": false,
+      "mode": "refusal",
+      "key_in_answer": false,
+      "key_in_citations": false,
+      "citations_valid": true,
+      "sentence_support": 0,
+      "refused": true,
+      "answer": "I can't answer that from the available documents."
+    },
+    {
+      "q": "Who won the 2022 football World Cup?",
+      "in_scope": false,
+      "mode": "refusal",
+      "key_in_answer": false,
+      "key_in_citations": false,
+      "citations_valid": true,
+      "sentence_support": 0,
+      "refused": true,
+      "answer": "I can't answer that from the available documents."
+    },
+    {
+      "q": "How do I bake sourdough bread at home?",
+      "in_scope": false,
+      "mode": "refusal",
+      "key_in_answer": false,
+      "key_in_citations": false,
+      "citations_valid": true,
+      "sentence_support": 0,
+      "refused": true,
+      "answer": "I can't answer that from the available documents."
+    },
+    {
+      "q": "What is Safran's share price today?",
+      "in_scope": false,
+      "mode": "refusal",
+      "key_in_answer": false,
+      "key_in_citations": false,
+      "citations_valid": true,
+      "sentence_support": 0,
+      "refused": true,
+      "answer": "I can't answer that from the available documents."
+    }
+  ]
+}

@@ -15,3 +15,4 @@ artifacts/*.pt.tmp
 artifacts/FD002/
 artifacts/FD004/
 artifacts/_seed*/
+frontend/tsconfig.tsbuildinfo

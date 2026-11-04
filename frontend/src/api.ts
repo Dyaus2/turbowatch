@@ -74,8 +74,25 @@ export interface MetricsResp {
   results_markdown: string;
 }
 
-export async function getJSON<T>(url: string, signal?: AbortSignal): Promise<T> {
+/** Static build (`vite build --mode static`): no server, the /api/* calls are answered in the browser. */
+export const STATIC = import.meta.env.MODE === "static";
+
+export async function apiGet<T>(url: string, signal?: AbortSignal): Promise<T> {
+  if (STATIC) {
+    const { staticGet } = await import("./static/runtime");
+    return (await staticGet(url)) as T;
+  }
   const r = await fetch(url, { signal });
   if (!r.ok) throw new Error(`${r.status} ${r.statusText} — ${url}`);
+  return r.json() as Promise<T>;
+}
+
+export async function apiPost<T>(url: string, body?: unknown): Promise<T> {
+  if (STATIC) {
+    const { staticPost } = await import("./static/runtime");
+    return (await staticPost(url, body)) as T;
+  }
+  const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
   return r.json() as Promise<T>;
 }
