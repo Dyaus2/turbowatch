@@ -8,7 +8,8 @@ RUN npm run build
 
 FROM python:3.13-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 \
-    TURBOWATCH_ROOT=/app OMP_NUM_THREADS=2 MLFLOW_DISABLE_AGENT_HINT=1
+    TURBOWATCH_ROOT=/app OMP_NUM_THREADS=2 MLFLOW_DISABLE_AGENT_HINT=1 \
+    HF_HOME=/app/.cache/huggingface HF_HUB_DISABLE_PROGRESS_BARS=1
 RUN useradd -m -u 1000 user
 WORKDIR /app
 COPY requirements.txt ./
@@ -17,6 +18,9 @@ RUN pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu \
 COPY pyproject.toml README.md ./
 COPY src/ src/
 RUN pip install --no-deps .
+# copilot models (bge-small embedder ~130 MB, MiniLM cross-encoder ~90 MB), baked into the image
+RUN python -c "from sentence_transformers import SentenceTransformer, CrossEncoder; SentenceTransformer('BAAI/bge-small-en-v1.5'); CrossEncoder('cross-encoder/ms-marco-MiniLM-L6-v2')"
+COPY data/corpus/ data/corpus/
 COPY artifacts/ artifacts/
 COPY results/ results/
 COPY --from=ui /ui/dist frontend/dist

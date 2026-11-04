@@ -1,4 +1,6 @@
 """API tests on a synthetic dataset written in the real C-MAPSS text format (exercises the full load path)."""
+import json
+
 import numpy as np
 import pytest
 from fastapi.testclient import TestClient
@@ -23,10 +25,17 @@ def client(tmp_path_factory):
     np.savetxt(raw / "RUL_FD001.txt", rul, fmt="%d")
     run(Config(subset="FD001", data_dir=str(raw), out_dir=str(root / "artifacts"), cnn_epochs=2, ae_epochs=3, mlflow=False))
     fl = api.Fleet(root=root, subset="FD001")
-    original = api.fleet
-    api.fleet = lambda: fl
+    from tests.test_rag import DOCS, FakeEmbedder  # tiny corpus, no model downloads
+    from turbowatch import rag
+    chunks = [{"id": f"{s}:p{p}:0", "source": s, "title": f"Doc {s}", "page": p, "url": "https://example.org", "text": t} for s, p, t in DOCS]
+    (root / "corpus").mkdir()
+    (root / "corpus" / "chunks.jsonl").write_text("\n".join(json.dumps(c) for c in chunks))
+    np.save(root / "corpus" / "embeddings.npy", FakeEmbedder().encode([c["text"] for c in chunks]))
+    cp = rag.Copilot(rag.Retriever(root / "corpus", embedder=FakeEmbedder(), rerank=False), min_dense=0.2)
+    original, original_cp = api.fleet, api.copilot
+    api.fleet, api.copilot = (lambda: fl), (lambda: cp)
     yield TestClient(api.app)
-    api.fleet = original
+    api.fleet, api.copilot = original, original_cp
 
 
 def test_meta_and_fleet(client):
@@ -57,3 +66,14 @@ def test_replay_stream(client):
     with client.stream("GET", "/api/replay/stream", params={"start": 1, "end": 3, "speed": 50}) as r:
         body = "".join(r.iter_text())
     assert body.count("event: snapshot") == 3 and "event: end" in body
+
+
+def test_copilot_endpoints(client, monkeypatch):
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
+    assert client.get("/api/copilot/status").json()["llm"] is False
+    a = client.post("/api/copilot/ask", json={"question": "What is the purpose of an alert level?"}).json()
+    assert a["mode"] == "template" and a["citations"]
+    assert client.post("/api/copilot/ask", json={"question": "x"}).status_code == 422  # too short
+    unit = client.get("/api/fleet").json()["engines"][0]["unit"]
+    e = client.post(f"/api/copilot/explain/{unit}").json()
+    assert f"Engine #{unit}" in e["answer"] and e["mode"] == "template"

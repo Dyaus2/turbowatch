@@ -1,7 +1,7 @@
 .git
 **/node_modules
 frontend/dist
-data/
+data/raw/
 mlruns/
 mlartifacts/
 **/__pycache__

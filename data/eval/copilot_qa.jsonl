@@ -1,0 +1,30 @@
+{"q": "What does FOD stand for and what typically causes it on the ground?", "source": "FAA-H-8083-32B", "page": 470, "key": "foreign object damage"}
+{"q": "What are the four types of gas turbine engines used to propel and power aircraft?", "source": "FAA-H-8083-32B", "page": 57, "key": "turboshaft"}
+{"q": "Why do almost all airliners use turbofan engines rather than pure turbojets?", "source": "FAA-H-8083-32B", "page": 57, "key": "fuel consumption"}
+{"q": "What does the low-pressure spool of a two-spool turbofan contain?", "source": "FAA-H-8083-32B", "page": 57, "key": "fan"}
+{"q": "What is one of the most frequent discrepancies found when inspecting the hot section of a turbine engine?", "source": "FAA-H-8083-32B", "page": 415, "key": "cracking"}
+{"q": "During a hot section inspection, what should be checked on the first stage turbine blades and nozzle guide vanes?", "source": "FAA-H-8083-32B", "page": 415, "key": "warping"}
+{"q": "What can happen if the fuel quantity becomes excessive in relation to the mass airflow through the engine?", "source": "FAA-H-8083-32B", "page": 115, "key": "compressor stall"}
+{"q": "What is a rich blowout?", "source": "FAA-H-8083-32B", "page": 115, "key": "insufficient to support combustion"}
+{"q": "What does a higher exhaust gas temperature (EGT) mean for the energy delivered to the turbine?", "source": "FAA-H-8083-32B", "page": 422, "key": "larger amount of energy"}
+{"q": "How are the high and low pressure spools of a two-spool turbofan referred to on the tachometers?", "source": "FAA-H-8083-32B", "page": 423, "key": "N1 and N2"}
+{"q": "Why are turbine engine tachometers usually calibrated in percent rpm?", "source": "FAA-H-8083-32B", "page": 423, "key": "percent rpm"}
+{"q": "What is the minimum number and type of bearings required to support one shaft?", "source": "FAA-H-8083-32B", "page": 73, "key": "deep groove ball bearing"}
+{"q": "Why do many newer engines use hydraulic bearings?", "source": "FAA-H-8083-32B", "page": 73, "key": "reduces vibrations"}
+{"q": "What are the benefits and drawbacks of shrouded turbine blades?", "source": "FAA-H-8083-32B", "page": 71, "key": "vibration characteristics"}
+{"q": "What should be checked if the engine has high exhaust gas temperature at target engine pressure ratio for takeoff?", "source": "FAA-H-8083-32B", "page": 428, "key": "turbine discharge pressure"}
+{"q": "Which parameters does an electronic engine control (EEC) sense?", "source": "FAA-H-8083-32B", "page": 468, "key": "power-lever angle"}
+{"q": "What is the purpose of an alert level in a reliability program?", "source": "AC-120-17B", "page": 20, "key": "significant deviations"}
+{"q": "How high or low should a reliability program alert level be set?", "source": "AC-120-17B", "page": 20, "key": "excessive alerts"}
+{"q": "Are reliability alert levels minimum acceptable airworthiness levels?", "source": "AC-120-17B", "page": 20, "key": "not minimum acceptable airworthiness levels"}
+{"q": "What does advisory circular AC 120-17B provide guidance for?", "source": "AC-120-17B", "page": 1, "key": "reliability program"}
+{"q": "How does a reliability program relate to the Continuing Analysis and Surveillance System (CASS)?", "source": "AC-120-17B", "page": 9, "key": "part of your CASS"}
+{"q": "Under the CASS requirement, how much of the performance standard data is collected and analyzed?", "source": "AC-120-17B", "page": 26, "key": "100 percent"}
+{"q": "What kind of degradation was imposed on flow and efficiency to generate the C-MAPSS run-to-failure data?", "source": "NASA-CMAPSS-2008", "page": 1, "key": "exponential"}
+{"q": "When is the failure criterion reached in the C-MAPSS damage propagation simulation?", "source": "NASA-CMAPSS-2008", "page": 1, "key": "health index reaches zero"}
+{"q": "Which data competition used the C-MAPSS simulated engine data as challenge data?", "source": "NASA-CMAPSS-2008", "page": 1, "key": "PHM"}
+{"q": "What does the C-MAPSS control system's limit regulator prevent at the high-pressure compressor exit?", "source": "NASA-CMAPSS-2008", "page": 2, "key": "static pressure"}
+{"q": "What is the list price of a new CFM56 engine?", "source": null, "page": null, "key": null}
+{"q": "Who won the 2022 football World Cup?", "source": null, "page": null, "key": null}
+{"q": "How do I bake sourdough bread at home?", "source": null, "page": null, "key": null}
+{"q": "What is Safran's share price today?", "source": null, "page": null, "key": null}

@@ -1,6 +1,7 @@
 import { BookOpen, Gauge, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Meta } from "./api";
+import { CopilotPanel } from "./CopilotPanel";
 import { EngineDetail } from "./EngineDetail";
 import { FleetView } from "./FleetView";
 import { HowItWorks } from "./HowItWorks";
@@ -74,7 +75,7 @@ export default function App() {
           <ReplayProvider maxCycle={meta.max_cycle}>
             {route.page !== "how" && <div className="sticky top-[53px] z-10"><ReplayBar /></div>}
             {route.page === "fleet" && <FleetView open={(u) => go(`#/engine/${u}`)} />}
-            {route.page === "engine" && <EngineDetail unit={route.unit} meta={meta} back={() => go("#/")} />}
+            {route.page === "engine" && <EngineDetail unit={route.unit} meta={meta} back={() => go("#/")}><CopilotPanel unit={route.unit} /></EngineDetail>}
             {route.page === "how" && <HowItWorks />}
           </ReplayProvider>
         )}

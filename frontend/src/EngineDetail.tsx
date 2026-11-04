@@ -77,7 +77,7 @@ export function EngineDetail({ unit, meta, back, children }: { unit: number; met
         </Panel>
       </div>
 
-      <div className={`grid gap-4 ${children ? "xl:grid-cols-[1fr_380px]" : ""}`}>
+      <div className={`grid items-start gap-4 ${children ? "xl:grid-cols-[1fr_380px]" : ""}`}>
         <Panel title="Health risk — P(failure within 30 cycles)">
           <div className="h-44">
             <ResponsiveContainer>

@@ -53,6 +53,8 @@ export function HowItWorks() {
         </p>
       </Panel>
 
+      <CopilotMetrics data={data} />
+
       <div className="grid gap-4 md:grid-cols-2">
         <Panel title="What did not work (kept on purpose)">
           <ul className="list-disc space-y-1 pl-5 text-sm text-slate-600 dark:text-slate-300">
@@ -70,5 +72,35 @@ export function HowItWorks() {
         </Panel>
       </div>
     </div>
+  );
+}
+
+type Ret = Record<string, { "hit@1": number; "hit@3": number; "hit@5": number; "mrr@10": number }>;
+
+function CopilotMetrics({ data }: { data: MetricsResp | null }) {
+  const c = (data as unknown as { copilot?: Record<string, unknown> } | null)?.copilot;
+  if (!c) return null;
+  const ret = c.retrieval as Ret;
+  const pct = (x: unknown) => `${Math.round(Number(x) * 100)}%`;
+  return (
+    <Panel title={`Maintenance copilot — evaluation on ${c.n_in_scope} document questions + ${c.n_out_of_scope} out-of-scope`}>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <table className="w-full text-sm tick-num">
+          <thead className="text-left text-[11px] uppercase tracking-wider text-slate-500"><tr><th className="py-1.5">Retriever</th><th>hit@1</th><th>hit@3</th><th>MRR@10</th></tr></thead>
+          <tbody>
+            {Object.entries(ret).map(([k, v]) => (
+              <tr key={k} className="border-t border-slate-200 dark:border-slate-800"><td className="py-1.5">{k}</td><td className="mono">{pct(v["hit@1"])}</td><td className="mono">{pct(v["hit@3"])}</td><td className="mono">{v["mrr@10"].toFixed(3)}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <ul className="space-y-1 text-sm">
+          <li>Out-of-scope questions refused: <b className="mono">{pct(c.out_of_scope_refused)}</b></li>
+          <li>Gold fact present in cited passages: <b className="mono">{pct(c.key_fact_in_cited_passages)}</b></li>
+          <li>Gold fact present in the answer text ({String(c.answer_mode)} mode): <b className="mono">{pct(c.key_fact_in_answer)}</b></li>
+          <li>Answer sentences supported by cited passages: <b className="mono">{pct(c.sentence_support)}</b></li>
+          <li className="text-xs text-slate-500">Hybrid = bge-small dense + BM25 with reciprocal rank fusion; rerank = MiniLM cross-encoder on the top 20. Documents: FAA powerplant handbook (turbine chapters), FAA AC 120-17B & 120-16G, NASA C-MAPSS paper.</li>
+        </ul>
+      </div>
+    </Panel>
   );
 }

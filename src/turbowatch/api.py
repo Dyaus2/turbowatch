@@ -19,6 +19,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, Field
 
 from . import data
 from .predictor import Predictor
@@ -77,10 +78,22 @@ def fleet() -> Fleet:
     return Fleet()
 
 
+@lru_cache(maxsize=1)
+def copilot():
+    from .rag import Copilot, Retriever
+    return Copilot(Retriever(ROOT / "data" / "corpus"))
+
+
+class AskIn(BaseModel):
+    question: str = Field(min_length=3, max_length=500)
+
+
 @asynccontextmanager
 async def lifespan(_app):
     if os.environ.get("TURBOWATCH_WARM", "1") == "1" and (ROOT / "artifacts" / SUBSET).exists():
         fleet()  # precompute the fleet at startup so the first visitor does not wait
+        if (ROOT / "data" / "corpus" / "chunks.jsonl").exists():
+            copilot()  # load embedding + reranker models once
     yield
 
 
@@ -156,9 +169,33 @@ def metrics_view():
     p = f.metrics_path / "summary.json"
     if p.exists():
         out["summary"] = json.loads(p.read_text())
+    ce = f.metrics_path / "copilot_eval.json"
+    if ce.exists():
+        out["copilot"] = {k: v for k, v in json.loads(ce.read_text()).items() if k != "answers"}
     md = f.metrics_path / "RESULTS.md"
     out["results_markdown"] = md.read_text() if md.exists() else ""
     return out
+
+
+@app.get("/api/copilot/status")
+def copilot_status():
+    return {"llm": bool(os.environ.get("GROQ_API_KEY")), "model": os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile") if os.environ.get("GROQ_API_KEY") else None}
+
+
+@app.post("/api/copilot/ask")
+def copilot_ask(body: AskIn):
+    return copilot().answer(body.question.strip())
+
+
+@app.post("/api/copilot/explain/{unit}")
+def copilot_explain(unit: int, cycle: int | None = Query(None, ge=1)):
+    f = fleet()
+    rows = f.engine_rows(unit, cycle)
+    if rows.empty:
+        raise HTTPException(404, f"engine {unit} has no data up to cycle {cycle}")
+    snap = next(e for e in f.snapshot(int(rows["cycle"].iloc[-1])) if e["unit"] == unit)
+    factors = f.pred.explain_row(f.X.loc[[rows.index[-1]]], 6)["factors"]
+    return copilot().explain_alarm(snap, factors)
 
 
 @app.get("/api/replay/stream")

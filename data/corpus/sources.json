@@ -1,0 +1,33 @@
+[
+  {
+    "id": "FAA-H-8083-32B",
+    "title": "FAA Aviation Maintenance Technician Handbook \u2014 Powerplant (FAA-H-8083-32B)",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook.pdf",
+    "license": "U.S. Government work (FAA) \u2014 public domain in the U.S.; text only, third-party images not used",
+    "pages": [
+      56,
+      470
+    ]
+  },
+  {
+    "id": "AC-120-17B",
+    "title": "FAA Advisory Circular AC 120-17B \u2014 Reliability Program Methods",
+    "url": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_120-17B.pdf",
+    "license": "U.S. Government work (FAA) \u2014 public domain in the U.S.",
+    "pages": null
+  },
+  {
+    "id": "AC-120-16G",
+    "title": "FAA Advisory Circular AC 120-16G \u2014 Air Carrier Maintenance Programs",
+    "url": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_120-16G.pdf",
+    "license": "U.S. Government work (FAA) \u2014 public domain in the U.S.",
+    "pages": null
+  },
+  {
+    "id": "NASA-CMAPSS-2008",
+    "title": "Saxena, Goebel, Simon, Eklund \u2014 Damage Propagation Modeling for Aircraft Engine Prognostics (NASA NTRS 20090029214)",
+    "url": "https://ntrs.nasa.gov/api/citations/20090029214/downloads/20090029214.pdf",
+    "license": "NASA Technical Reports Server \u2014 copyright determination: PUBLIC_USE_PERMITTED",
+    "pages": null
+  }
+]

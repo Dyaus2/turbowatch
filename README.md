@@ -34,6 +34,20 @@ Evaluation protocol: training engines are split **by engine** into fit (70%) / c
 
 What did **not** work (kept in the table on purpose): the autoencoder health score separates degraded from healthy cycles poorly, and its cost-optimal policy alarms on every engine; the Isolation Forest risk is better calibrated (Brier 0.059) but detects only 62% of test failures, because test engines are cut before failure and the smoothed risk reacts late. The P10–P90 RUL band covers the truth in 66% of test engines (nominal 80%) — the quantile models are over-confident.
 
+## Maintenance copilot (GenAI, grounded)
+The engine page has an **"Explain this engine"** button and an **"Ask the manuals"** chat. Both retrieve passages from public FAA/NASA documents (FAA powerplant handbook turbine chapters, AC 120-17B, AC 120-16G, the NASA C-MAPSS paper; see [`docs/SOURCES.md`](docs/SOURCES.md)) and answer **with citations to the exact page**. Retrieval = bge-small dense + BM25 fused by reciprocal rank fusion, then a MiniLM cross-encoder rerank. The copilot **refuses** when the reranker finds nothing relevant. An LLM (Groq, `GROQ_API_KEY`) writes the answer when a key is configured; otherwise a template answer quotes the retrieved sentences. Decision support only.
+
+Evaluation on 26 questions written from the documents + 4 out-of-scope questions ([`results/COPILOT.md`](results/COPILOT.md), `scripts/eval_copilot.py`):
+
+| Retriever | hit@1 | hit@3 | MRR@10 |
+|---|---|---|---|
+| dense (bge-small) | 77% | 85% | 0.828 |
+| BM25 | 85% | 96% | 0.913 |
+| hybrid (RRF) | 77% | 92% | 0.854 |
+| **hybrid + cross-encoder rerank (production)** | **100%** | **100%** | **1.000** |
+
+Out-of-scope questions refused: 4/4 · gold fact present in the cited passages: 100% · in the template answer text: 69% (the template is extractive; the LLM path is evaluated when a key is available). Small, self-written set — indicative, not a benchmark.
+
 ## How it works
 ```
 C-MAPSS cycles ─► validation ─► per-regime normalisation (KMeans on operating settings; 1 regime FD001/3, 6 regimes FD002/4)
@@ -53,7 +67,9 @@ pip install -r requirements.txt -r requirements-dev.txt && pip install -e . --no
 python scripts/train.py --subsets FD001 --seeds 0 1 2 3 4   # downloads NASA data, ~50 s per seed on 4 CPU cores
 python scripts/make_results.py                             # regenerates results/RESULTS.md
 pytest -q && ruff check .
-uvicorn turbowatch.api:app --port 7860                      # JSON API (fleet, engines, alarms, replay stream)
+cd frontend && npm ci && npm run build && cd ..              # dashboard (served by the API at /)
+uvicorn turbowatch.api:app --port 7860                      # API + dashboard on http://localhost:7860
+python scripts/build_corpus.py && python scripts/eval_copilot.py   # rebuild copilot corpus + evaluation
 mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db    # experiment tracking
 ```
 **Colab (T4 GPU):** [`notebooks/turbowatch_colab.ipynb`](notebooks/turbowatch_colab.ipynb) clones the repo, trains everything (CNN on GPU, 60 epochs, 3 seeds) and plots a test engine with SHAP drivers.
@@ -69,13 +85,16 @@ src/turbowatch/
   alarm.py       k-of-n policy, engine-level outcomes, cost-matrix tuning
   explain.py     SHAP + sensor dictionary          metrics.py  RMSE, PHM08, coverage
   pipeline.py    end-to-end training/evaluation + MLflow     predictor.py  serving inference
-  api.py         FastAPI backend
-scripts/ train.py, make_results.py     tests/ unit, leakage, pipeline + API smoke tests
+  rag.py         copilot: hybrid retrieval + rerank, grounded answers with citations, LLM / template fallback
+  api.py         FastAPI backend (fleet, engines, alarms, replay SSE, copilot) + serves the built dashboard
+frontend/        React + TypeScript dashboard (fleet grid/table, engine detail, replay, copilot, how-it-works)
+data/corpus/     cleaned document chunks + embeddings (public FAA/NASA texts)     data/eval/  copilot Q/A set
+scripts/ train.py, make_results.py, build_corpus.py, eval_copilot.py     tests/ unit, leakage, pipeline, API, copilot
 results/ RESULTS.md, summary.json, runs/*.json     artifacts/FD001/ serving bundle (3 MB)
 ```
 
 ## Tech stack
-Python 3.13 · pandas · scikit-learn · PyTorch · SHAP · MLflow · FastAPI · pytest · ruff · GitHub Actions.
+Python 3.13 · pandas · scikit-learn · PyTorch · SHAP · MLflow · FastAPI · sentence-transformers (bge-small, MiniLM cross-encoder) · BM25 · Groq LLM API · React 19 + TypeScript + Tailwind 4 + Recharts · Docker · Hugging Face Spaces · pytest · ruff · GitHub Actions.
 
 ## Limitations
 - C-MAPSS is **simulated** data with a single, fixed failure definition; real fleets have maintenance actions, sensor faults and censoring.
