@@ -172,6 +172,9 @@ def metrics_view():
     ce = f.metrics_path / "copilot_eval.json"
     if ce.exists():
         out["copilot"] = {k: v for k, v in json.loads(ce.read_text()).items() if k != "answers"}
+    dj = f.metrics_path / "drift.json"
+    if dj.exists():
+        out["drift"] = json.loads(dj.read_text())
     md = f.metrics_path / "RESULTS.md"
     out["results_markdown"] = md.read_text() if md.exists() else ""
     return out

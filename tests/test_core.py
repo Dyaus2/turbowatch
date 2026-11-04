@@ -127,3 +127,14 @@ def test_risk_calibrator_monotone():
 def test_last_rows():
     X = pd.DataFrame({"unit": [1, 1, 2], "cycle": [1, 2, 1], "a": [0, 1, 2]})
     assert last_rows(X)["a"].tolist() == [1, 2]
+
+
+def test_psi_detects_shift():
+    from turbowatch.drift import DriftMonitor, psi
+    rng = np.random.default_rng(0)
+    ref = rng.normal(0, 1, 4000)
+    assert psi(ref, rng.normal(0, 1, 4000)) < 0.05
+    assert psi(ref, rng.normal(1.0, 1, 4000)) > 0.25
+    mon = DriftMonitor(pd.DataFrame({"a": ref, "b": ref}), ["a", "b"])
+    rep = mon.report(pd.DataFrame({"a": rng.normal(1.5, 1, 500), "b": rng.normal(0, 1, 500)}))
+    assert rep[0]["sensor"] == "a" and rep[0]["level"] == "alert" and rep[1]["level"] == "ok"

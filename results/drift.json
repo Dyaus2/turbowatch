@@ -1,0 +1,338 @@
+{
+  "psi_fd001_early": [
+    {
+      "sensor": "s14",
+      "psi": 0.0716,
+      "level": "ok"
+    },
+    {
+      "sensor": "s9",
+      "psi": 0.0604,
+      "level": "ok"
+    },
+    {
+      "sensor": "s12",
+      "psi": 0.0389,
+      "level": "ok"
+    },
+    {
+      "sensor": "s4",
+      "psi": 0.0325,
+      "level": "ok"
+    },
+    {
+      "sensor": "s11",
+      "psi": 0.0316,
+      "level": "ok"
+    },
+    {
+      "sensor": "s13",
+      "psi": 0.0282,
+      "level": "ok"
+    },
+    {
+      "sensor": "s7",
+      "psi": 0.0258,
+      "level": "ok"
+    },
+    {
+      "sensor": "s17",
+      "psi": 0.0244,
+      "level": "ok"
+    },
+    {
+      "sensor": "s15",
+      "psi": 0.0243,
+      "level": "ok"
+    },
+    {
+      "sensor": "s8",
+      "psi": 0.0228,
+      "level": "ok"
+    },
+    {
+      "sensor": "s21",
+      "psi": 0.0187,
+      "level": "ok"
+    },
+    {
+      "sensor": "s2",
+      "psi": 0.0184,
+      "level": "ok"
+    },
+    {
+      "sensor": "s20",
+      "psi": 0.016,
+      "level": "ok"
+    },
+    {
+      "sensor": "s3",
+      "psi": 0.0056,
+      "level": "ok"
+    },
+    {
+      "sensor": "s6",
+      "psi": 0.0,
+      "level": "ok"
+    }
+  ],
+  "psi_fd003_early": [
+    {
+      "sensor": "s13",
+      "psi": 0.4593,
+      "level": "alert"
+    },
+    {
+      "sensor": "s8",
+      "psi": 0.4516,
+      "level": "alert"
+    },
+    {
+      "sensor": "s11",
+      "psi": 0.4427,
+      "level": "alert"
+    },
+    {
+      "sensor": "s17",
+      "psi": 0.3636,
+      "level": "alert"
+    },
+    {
+      "sensor": "s4",
+      "psi": 0.3551,
+      "level": "alert"
+    },
+    {
+      "sensor": "s3",
+      "psi": 0.3038,
+      "level": "alert"
+    },
+    {
+      "sensor": "s9",
+      "psi": 0.3038,
+      "level": "alert"
+    },
+    {
+      "sensor": "s2",
+      "psi": 0.2736,
+      "level": "alert"
+    },
+    {
+      "sensor": "s15",
+      "psi": 0.2635,
+      "level": "alert"
+    },
+    {
+      "sensor": "s12",
+      "psi": 0.2243,
+      "level": "watch"
+    },
+    {
+      "sensor": "s14",
+      "psi": 0.2224,
+      "level": "watch"
+    },
+    {
+      "sensor": "s7",
+      "psi": 0.1718,
+      "level": "watch"
+    },
+    {
+      "sensor": "s21",
+      "psi": 0.0884,
+      "level": "ok"
+    },
+    {
+      "sensor": "s20",
+      "psi": 0.0882,
+      "level": "ok"
+    },
+    {
+      "sensor": "s6",
+      "psi": 0.0,
+      "level": "ok"
+    }
+  ],
+  "psi_fd001_late": [
+    {
+      "sensor": "s11",
+      "psi": 0.6536,
+      "level": "alert"
+    },
+    {
+      "sensor": "s4",
+      "psi": 0.6374,
+      "level": "alert"
+    },
+    {
+      "sensor": "s7",
+      "psi": 0.6001,
+      "level": "alert"
+    },
+    {
+      "sensor": "s12",
+      "psi": 0.5968,
+      "level": "alert"
+    },
+    {
+      "sensor": "s20",
+      "psi": 0.526,
+      "level": "alert"
+    },
+    {
+      "sensor": "s21",
+      "psi": 0.5227,
+      "level": "alert"
+    },
+    {
+      "sensor": "s15",
+      "psi": 0.5169,
+      "level": "alert"
+    },
+    {
+      "sensor": "s13",
+      "psi": 0.4163,
+      "level": "alert"
+    },
+    {
+      "sensor": "s2",
+      "psi": 0.4148,
+      "level": "alert"
+    },
+    {
+      "sensor": "s3",
+      "psi": 0.4038,
+      "level": "alert"
+    },
+    {
+      "sensor": "s17",
+      "psi": 0.3792,
+      "level": "alert"
+    },
+    {
+      "sensor": "s8",
+      "psi": 0.3635,
+      "level": "alert"
+    },
+    {
+      "sensor": "s9",
+      "psi": 0.1961,
+      "level": "watch"
+    },
+    {
+      "sensor": "s14",
+      "psi": 0.1484,
+      "level": "watch"
+    },
+    {
+      "sensor": "s6",
+      "psi": 0.0,
+      "level": "ok"
+    }
+  ],
+  "psi_fd003_late": [
+    {
+      "sensor": "s15",
+      "psi": 0.7522,
+      "level": "alert"
+    },
+    {
+      "sensor": "s12",
+      "psi": 0.7447,
+      "level": "alert"
+    },
+    {
+      "sensor": "s7",
+      "psi": 0.6757,
+      "level": "alert"
+    },
+    {
+      "sensor": "s21",
+      "psi": 0.4809,
+      "level": "alert"
+    },
+    {
+      "sensor": "s20",
+      "psi": 0.4689,
+      "level": "alert"
+    },
+    {
+      "sensor": "s9",
+      "psi": 0.3731,
+      "level": "alert"
+    },
+    {
+      "sensor": "s13",
+      "psi": 0.3394,
+      "level": "alert"
+    },
+    {
+      "sensor": "s14",
+      "psi": 0.3305,
+      "level": "alert"
+    },
+    {
+      "sensor": "s8",
+      "psi": 0.3208,
+      "level": "alert"
+    },
+    {
+      "sensor": "s11",
+      "psi": 0.2838,
+      "level": "alert"
+    },
+    {
+      "sensor": "s4",
+      "psi": 0.21,
+      "level": "watch"
+    },
+    {
+      "sensor": "s3",
+      "psi": 0.1749,
+      "level": "watch"
+    },
+    {
+      "sensor": "s17",
+      "psi": 0.1691,
+      "level": "watch"
+    },
+    {
+      "sensor": "s2",
+      "psi": 0.1234,
+      "level": "watch"
+    },
+    {
+      "sensor": "s6",
+      "psi": 0.0,
+      "level": "ok"
+    }
+  ],
+  "evaluation": {
+    "champion": {
+      "FD001": {
+        "calib_rmse": 15.37884753032683,
+        "test_rmse": 16.643370849693373,
+        "test_phm08": 526.9836542671082
+      },
+      "FD003": {
+        "calib_rmse": 17.29581576490686,
+        "test_rmse": 20.725675245604396,
+        "test_phm08": 2100.8916545527154
+      }
+    },
+    "challenger": {
+      "FD001": {
+        "calib_rmse": 14.255806758088486,
+        "test_rmse": 14.603244120242483,
+        "test_phm08": 336.02708005563835
+      },
+      "FD003": {
+        "calib_rmse": 12.856368269824511,
+        "test_rmse": 14.964837529504848,
+        "test_phm08": 630.462492784089
+      }
+    }
+  },
+  "decision": "promote challenger",
+  "tolerance_rmse": 0.5
+}

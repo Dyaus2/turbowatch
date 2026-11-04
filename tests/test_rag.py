@@ -1,6 +1,7 @@
 """Copilot tests with a deterministic fake embedder (no model downloads in CI)."""
 import json
 import re
+import zlib
 
 import numpy as np
 import pytest
@@ -24,7 +25,7 @@ class FakeEmbedder:
         out = np.zeros((len(texts), self.dim), np.float32)
         for i, t in enumerate(texts):
             for w in rag.tokenize(t):
-                out[i, hash(w) % self.dim] += 1.0
+                out[i, zlib.crc32(w.encode()) % self.dim] += 1.0  # stable across processes (hash() is salted)
         return out / (np.linalg.norm(out, axis=1, keepdims=True) + 1e-9)
 
 

@@ -54,6 +54,7 @@ export function HowItWorks() {
       </Panel>
 
       <CopilotMetrics data={data} />
+      <DriftScenario data={data} />
 
       <div className="grid gap-4 md:grid-cols-2">
         <Panel title="What did not work (kept on purpose)">
@@ -100,6 +101,56 @@ function CopilotMetrics({ data }: { data: MetricsResp | null }) {
           <li>Answer sentences supported by cited passages: <b className="mono">{pct(c.sentence_support)}</b></li>
           <li className="text-xs text-slate-500">Hybrid = bge-small dense + BM25 with reciprocal rank fusion; rerank = MiniLM cross-encoder on the top 20. Documents: FAA powerplant handbook (turbine chapters), FAA AC 120-17B & 120-16G, NASA C-MAPSS paper.</li>
         </ul>
+      </div>
+    </Panel>
+  );
+}
+
+interface PsiRow { sensor: string; psi: number; level: string }
+interface DriftData {
+  psi_fd001_early: PsiRow[]; psi_fd003_early: PsiRow[]; psi_fd001_late: PsiRow[]; psi_fd003_late: PsiRow[];
+  evaluation: Record<"champion" | "challenger", Record<"FD001" | "FD003", { calib_rmse: number; test_rmse: number }>>;
+  decision: string; tolerance_rmse: number;
+}
+
+function DriftScenario({ data }: { data: MetricsResp | null }) {
+  const d = (data as unknown as { drift?: DriftData } | null)?.drift;
+  if (!d) return null;
+  const alerts = (r: PsiRow[]) => r.filter((x) => x.level === "alert").length;
+  const streams: [string, PsiRow[]][] = [
+    ["FD001 test — healthy phase (in-distribution)", d.psi_fd001_early], ["FD003 test — healthy phase (new fleet)", d.psi_fd003_early],
+    ["FD001 test — degraded phase", d.psi_fd001_late], ["FD003 test — degraded phase", d.psi_fd003_late],
+  ];
+  const e = d.evaluation;
+  return (
+    <Panel title="MLOps scenario — drift detection & champion/challenger (FD001 model meets the FD003 fleet)">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div>
+          <p className="mb-2 text-xs text-slate-500">PSI per sensor vs the healthy FD001 baseline (first 30 cycles of training engines). PSI ≥ 0.25 = alert.</p>
+          <table className="w-full text-sm tick-num">
+            <tbody>
+              {streams.map(([label, rows]) => (
+                <tr key={label} className="border-t border-slate-200 dark:border-slate-800">
+                  <td className="py-1.5 pr-2">{label}</td>
+                  <td className="mono"><span style={{ color: alerts(rows) ? "#ef4444" : "#10b981" }}>{alerts(rows)}</span>/{rows.length} sensors</td>
+                  <td className="mono text-xs text-slate-500">{rows.slice(0, 3).map((r) => `${r.sensor} ${r.psi.toFixed(2)}`).join(", ")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p className="mb-2 text-xs text-slate-500">Challenger = retrained on FD001 + FD003 fit engines. Decision taken on calibration engines only; test RMSE shown after the decision.</p>
+          <table className="w-full text-sm tick-num">
+            <thead className="text-left text-[11px] uppercase tracking-wider text-slate-500"><tr><th className="py-1.5">Model</th><th>FD001 test RMSE</th><th>FD003 test RMSE</th></tr></thead>
+            <tbody>
+              {(["champion", "challenger"] as const).map((m) => (
+                <tr key={m} className="border-t border-slate-200 dark:border-slate-800"><td className="py-1.5 capitalize">{m}</td><td className="mono">{e[m].FD001.test_rmse.toFixed(2)}</td><td className="mono">{e[m].FD003.test_rmse.toFixed(2)}</td></tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="mt-2 text-sm">Decision: <b className="text-emerald-500">{d.decision}</b> <span className="text-xs text-slate-500">(rule: better on FD003, not worse than +{d.tolerance_rmse} RMSE on FD001)</span></p>
+        </div>
       </div>
     </Panel>
   );

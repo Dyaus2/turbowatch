@@ -48,6 +48,27 @@ Evaluation on 26 questions written from the documents + 4 out-of-scope questions
 
 Out-of-scope questions refused: 4/4 · gold fact present in the cited passages: 100% · in the template answer text: 69% (the template is extractive; the LLM path is evaluated when a key is available). Small, self-written set — indicative, not a benchmark.
 
+## Architecture
+```mermaid
+flowchart LR
+  A[NASA C-MAPSS cycles] --> B[Validation + per-regime normalisation]
+  B --> C[Causal features<br/>shared train = serve]
+  C --> D[Gradient boosting RUL<br/>+ P10/P90 band]
+  B --> E[1D-CNN RUL<br/>PyTorch]
+  C --> F[Isolation Forest health<br/>+ Platt-calibrated risk]
+  D --> G[Cost-tuned k-of-n alarm]
+  D --> H[TreeSHAP drivers]
+  G & H & F --> I[FastAPI + replay stream]
+  J[FAA / NASA public docs] --> K[bge-small + BM25 → RRF → cross-encoder]
+  K --> L[Copilot: cited answers<br/>Groq LLM or template]
+  H --> L
+  I & L --> M[React dashboard<br/>Hugging Face Space]
+  N[PSI drift monitor] --> O[Champion / challenger retraining]
+```
+
+## MLOps: drift & champion/challenger
+`scripts/drift_scenario.py` streams a new fleet (FD003, which adds a fan-degradation mode) past the FD001 model. PSI against the healthy FD001 baseline: **0/15 sensors drift on the FD001 test stream vs 9/15 on the FD003 stream** already in its healthy phase. A challenger retrained on FD001+FD003 is promoted by a rule evaluated on calibration engines only; after the decision, FD003 test RMSE drops **20.73 → 14.96** with no regression on FD001 (16.64 → 14.60). Details: [`results/DRIFT.md`](results/DRIFT.md). Model & data cards: [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md), [`docs/DATA_CARD.md`](docs/DATA_CARD.md).
+
 ## How it works
 ```
 C-MAPSS cycles ─► validation ─► per-regime normalisation (KMeans on operating settings; 1 regime FD001/3, 6 regimes FD002/4)
@@ -89,7 +110,7 @@ src/turbowatch/
   api.py         FastAPI backend (fleet, engines, alarms, replay SSE, copilot) + serves the built dashboard
 frontend/        React + TypeScript dashboard (fleet grid/table, engine detail, replay, copilot, how-it-works)
 data/corpus/     cleaned document chunks + embeddings (public FAA/NASA texts)     data/eval/  copilot Q/A set
-scripts/ train.py, make_results.py, build_corpus.py, eval_copilot.py     tests/ unit, leakage, pipeline, API, copilot
+scripts/ train.py, make_results.py, build_corpus.py, eval_copilot.py, drift_scenario.py     tests/ unit, leakage, pipeline, API, copilot
 results/ RESULTS.md, summary.json, runs/*.json     artifacts/FD001/ serving bundle (3 MB)
 ```
 
