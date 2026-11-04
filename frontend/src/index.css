@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-ok: #10b981;
+  --color-watch: #f59e0b;
+  --color-alarm: #ef4444;
+  --color-accent: #22d3ee;
+}
+
+html { color-scheme: light; }
+html.dark { color-scheme: dark; }
+body { @apply bg-slate-100 text-slate-900 dark:bg-[#070b14] dark:text-slate-100 antialiased; }
+
+.panel { @apply rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/70 shadow-sm; }
+.panel-title { @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400; }
+.mono { font-family: var(--font-mono); }
+.tick-num { font-variant-numeric: tabular-nums; }
+
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgb(239 68 68 / .55); } 70% { box-shadow: 0 0 0 8px rgb(239 68 68 / 0); } 100% { box-shadow: 0 0 0 0 rgb(239 68 68 / 0); } }
+.alarm-pulse { animation: pulse-ring 1.6s infinite; }
+@keyframes flash { from { background-color: rgb(239 68 68 / .25); } to { background-color: transparent; } }
+.flash { animation: flash 1.2s ease-out; }
+
+@media (prefers-reduced-motion: reduce) { .alarm-pulse, .flash { animation: none; } }

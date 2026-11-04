@@ -1,0 +1,259 @@
+{
+  "subset": "FD004",
+  "n_engines": {
+    "fit": 174,
+    "calib": 37,
+    "holdout": 38,
+    "test": 248
+  },
+  "gbm": {
+    "test_rmse": 16.50088932049862,
+    "test_phm08": 1428.914720595906,
+    "test_p10_p90_coverage": 0.7338709677419355,
+    "holdout_rmse_all_cycles": 15.86681352522985
+  },
+  "cnn": {
+    "test_rmse": 17.16365671765708,
+    "test_phm08": 1913.4468357335322,
+    "holdout_rmse_all_cycles": 16.470147293740197,
+    "epochs": 20,
+    "final_train_mse": 136.75905578209148
+  },
+  "health": {
+    "isolation_forest": {
+      "holdout_brier": 0.05011394827564291,
+      "holdout_ece": 0.03254930011461191
+    },
+    "autoencoder": {
+      "holdout_brier": 0.08610242978100723,
+      "holdout_ece": 0.08471065555078042
+    }
+  },
+  "alarms": {
+    "isolation_forest": {
+      "min_cost": {
+        "policy": {
+          "threshold": 0.31365431885326583,
+          "k": 3,
+          "n": 5
+        },
+        "calib_cost": 80.0,
+        "holdout": {
+          "engines": 38,
+          "positive_engines": 38,
+          "detection_rate": 0.9736842105263158,
+          "false_alarm_rate": 0.10526315789473684,
+          "median_lead_cycles": 36.0,
+          "missed": 1,
+          "cost": 140.0
+        },
+        "test": {
+          "engines": 248,
+          "positive_engines": 53,
+          "detection_rate": 0.7547169811320755,
+          "false_alarm_rate": 0.06854838709677419,
+          "median_lead_cycles": 31.5,
+          "missed": 13,
+          "cost": 1470.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": 0.42962542833244854,
+          "k": 5,
+          "n": 8
+        },
+        "calib_cost": 1110.0,
+        "holdout": {
+          "engines": 38,
+          "positive_engines": 38,
+          "detection_rate": 0.8157894736842105,
+          "false_alarm_rate": 0.07894736842105263,
+          "median_lead_cycles": 30.0,
+          "missed": 7,
+          "cost": 730.0
+        },
+        "test": {
+          "engines": 248,
+          "positive_engines": 53,
+          "detection_rate": 0.5660377358490566,
+          "false_alarm_rate": 0.04032258064516129,
+          "median_lead_cycles": 28.0,
+          "missed": 23,
+          "cost": 2400.0
+        }
+      }
+    },
+    "autoencoder": {
+      "min_cost": {
+        "policy": {
+          "threshold": 0.08836620010309272,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 370.0,
+        "holdout": {
+          "engines": 38,
+          "positive_engines": 38,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 1.0,
+          "median_lead_cycles": 60.0,
+          "missed": 0,
+          "cost": 380.0
+        },
+        "test": {
+          "engines": 248,
+          "positive_engines": 53,
+          "detection_rate": 0.9811320754716981,
+          "false_alarm_rate": 1.0,
+          "median_lead_cycles": 57.5,
+          "missed": 1,
+          "cost": 2580.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": 0.7148562279595916,
+          "k": 5,
+          "n": 8
+        },
+        "calib_cost": 2810.0,
+        "holdout": {
+          "engines": 38,
+          "positive_engines": 38,
+          "detection_rate": 0.2894736842105263,
+          "false_alarm_rate": 0.0,
+          "median_lead_cycles": 5.0,
+          "missed": 27,
+          "cost": 2700.0
+        },
+        "test": {
+          "engines": 248,
+          "positive_engines": 53,
+          "detection_rate": 0.1320754716981132,
+          "false_alarm_rate": 0.028225806451612902,
+          "median_lead_cycles": 20.0,
+          "missed": 46,
+          "cost": 4670.0
+        }
+      }
+    },
+    "gbm_rul": {
+      "min_cost": {
+        "policy": {
+          "threshold": -23.78460810614659,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 0.0,
+        "holdout": {
+          "engines": 38,
+          "positive_engines": 38,
+          "detection_rate": 0.9736842105263158,
+          "false_alarm_rate": 0.05263157894736842,
+          "median_lead_cycles": 21.0,
+          "missed": 1,
+          "cost": 120.0
+        },
+        "test": {
+          "engines": 248,
+          "positive_engines": 53,
+          "detection_rate": 0.8113207547169812,
+          "false_alarm_rate": 0.008064516129032258,
+          "median_lead_cycles": 22.0,
+          "missed": 10,
+          "cost": 1020.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": -23.78460810614659,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 0.0,
+        "holdout": {
+          "engines": 38,
+          "positive_engines": 38,
+          "detection_rate": 0.9736842105263158,
+          "false_alarm_rate": 0.05263157894736842,
+          "median_lead_cycles": 21.0,
+          "missed": 1,
+          "cost": 120.0
+        },
+        "test": {
+          "engines": 248,
+          "positive_engines": 53,
+          "detection_rate": 0.8113207547169812,
+          "false_alarm_rate": 0.008064516129032258,
+          "median_lead_cycles": 22.0,
+          "missed": 10,
+          "cost": 1020.0
+        }
+      }
+    }
+  },
+  "shap_global_top": [
+    {
+      "feature": "s11_mean5",
+      "description": "HPC outlet static pressure (Ps30), 5-cycle mean",
+      "mean_abs_shap": 14.513162376106244
+    },
+    {
+      "feature": "cycle",
+      "description": "Engine age (cycles)",
+      "mean_abs_shap": 5.198615808737054
+    },
+    {
+      "feature": "s9_mean5",
+      "description": "Physical core speed (Nc), 5-cycle mean",
+      "mean_abs_shap": 3.989049327801719
+    },
+    {
+      "feature": "s3_mean5",
+      "description": "HPC outlet temperature (T30), 5-cycle mean",
+      "mean_abs_shap": 3.3620001808093014
+    },
+    {
+      "feature": "s6_ewm",
+      "description": "Bypass-duct pressure (P15), smoothed level",
+      "mean_abs_shap": 2.798697550588466
+    },
+    {
+      "feature": "s17_mean5",
+      "description": "Bleed enthalpy (htBleed), 5-cycle mean",
+      "mean_abs_shap": 2.655197420536815
+    },
+    {
+      "feature": "s4_mean5",
+      "description": "LPT outlet temperature (T50), 5-cycle mean",
+      "mean_abs_shap": 2.2318174502439443
+    },
+    {
+      "feature": "s13_mean5",
+      "description": "Corrected fan speed (NRf), 5-cycle mean",
+      "mean_abs_shap": 2.097088003866135
+    }
+  ],
+  "train_seconds": 134.8,
+  "config": {
+    "subset": "FD004",
+    "data_dir": "data/raw",
+    "out_dir": "artifacts",
+    "seed": 0,
+    "cap": 125,
+    "horizon": 30,
+    "early_ok": 60,
+    "healthy_rul": 125,
+    "cnn_window": 30,
+    "cnn_epochs": 20,
+    "ae_epochs": 40,
+    "cost_missed": 100.0,
+    "cost_false_alarm": 10.0,
+    "max_far": 0.05,
+    "device": "cpu",
+    "mlflow": true
+  },
+  "serving_detector": "isolation_forest",
+  "serving_alarm_signal": "gbm_rul"
+}

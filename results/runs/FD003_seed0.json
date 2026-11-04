@@ -1,0 +1,259 @@
+{
+  "subset": "FD003",
+  "n_engines": {
+    "fit": 70,
+    "calib": 15,
+    "holdout": 15,
+    "test": 100
+  },
+  "gbm": {
+    "test_rmse": 15.15550224685791,
+    "test_phm08": 543.7246915771817,
+    "test_p10_p90_coverage": 0.62,
+    "holdout_rmse_all_cycles": 15.24412644921553
+  },
+  "cnn": {
+    "test_rmse": 16.322971618962367,
+    "test_phm08": 853.310071227764,
+    "holdout_rmse_all_cycles": 15.713047842373712,
+    "epochs": 20,
+    "final_train_mse": 135.94645147674504
+  },
+  "health": {
+    "isolation_forest": {
+      "holdout_brier": 0.06113757746749406,
+      "holdout_ece": 0.05619925403456601
+    },
+    "autoencoder": {
+      "holdout_brier": 0.08668905942444545,
+      "holdout_ece": 0.06410771587506553
+    }
+  },
+  "alarms": {
+    "isolation_forest": {
+      "min_cost": {
+        "policy": {
+          "threshold": 0.34986800608002705,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 20.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 0.26666666666666666,
+          "median_lead_cycles": 31.0,
+          "missed": 0,
+          "cost": 40.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 20,
+          "detection_rate": 0.85,
+          "false_alarm_rate": 0.06,
+          "median_lead_cycles": 40.0,
+          "missed": 3,
+          "cost": 360.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": 0.5662132203162932,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 800.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 0.5333333333333333,
+          "false_alarm_rate": 0.13333333333333333,
+          "median_lead_cycles": 41.5,
+          "missed": 7,
+          "cost": 720.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 20,
+          "detection_rate": 0.6,
+          "false_alarm_rate": 0.01,
+          "median_lead_cycles": 36.0,
+          "missed": 8,
+          "cost": 810.0
+        }
+      }
+    },
+    "autoencoder": {
+      "min_cost": {
+        "policy": {
+          "threshold": 0.08848859888289846,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 150.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 1.0,
+          "median_lead_cycles": 60.0,
+          "missed": 0,
+          "cost": 150.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 20,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 1.0,
+          "median_lead_cycles": 60.0,
+          "missed": 0,
+          "cost": 1000.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": 0.8820537814032926,
+          "k": 5,
+          "n": 8
+        },
+        "calib_cost": 1100.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 0.13333333333333333,
+          "false_alarm_rate": 0.0,
+          "median_lead_cycles": 15.0,
+          "missed": 13,
+          "cost": 1300.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 20,
+          "detection_rate": 0.0,
+          "false_alarm_rate": 0.01,
+          "median_lead_cycles": NaN,
+          "missed": 20,
+          "cost": 2010.0
+        }
+      }
+    },
+    "gbm_rul": {
+      "min_cost": {
+        "policy": {
+          "threshold": -36.929147431192675,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 0.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 0.06666666666666667,
+          "median_lead_cycles": 36.0,
+          "missed": 0,
+          "cost": 10.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 20,
+          "detection_rate": 0.95,
+          "false_alarm_rate": 0.0,
+          "median_lead_cycles": 38.0,
+          "missed": 1,
+          "cost": 100.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": -36.929147431192675,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 0.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 0.06666666666666667,
+          "median_lead_cycles": 36.0,
+          "missed": 0,
+          "cost": 10.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 20,
+          "detection_rate": 0.95,
+          "false_alarm_rate": 0.0,
+          "median_lead_cycles": 38.0,
+          "missed": 1,
+          "cost": 100.0
+        }
+      }
+    }
+  },
+  "shap_global_top": [
+    {
+      "feature": "s11_mean5",
+      "description": "HPC outlet static pressure (Ps30), 5-cycle mean",
+      "mean_abs_shap": 13.7045401596555
+    },
+    {
+      "feature": "s9_mean5",
+      "description": "Physical core speed (Nc), 5-cycle mean",
+      "mean_abs_shap": 6.182190706063531
+    },
+    {
+      "feature": "cycle",
+      "description": "Engine age (cycles)",
+      "mean_abs_shap": 5.273104697244773
+    },
+    {
+      "feature": "s6_ewm",
+      "description": "Bypass-duct pressure (P15), smoothed level",
+      "mean_abs_shap": 2.3931846053089156
+    },
+    {
+      "feature": "s4_mean5",
+      "description": "LPT outlet temperature (T50), 5-cycle mean",
+      "mean_abs_shap": 2.2928997167010206
+    },
+    {
+      "feature": "s17_mean5",
+      "description": "Bleed enthalpy (htBleed), 5-cycle mean",
+      "mean_abs_shap": 2.134348328256818
+    },
+    {
+      "feature": "s3_mean5",
+      "description": "HPC outlet temperature (T30), 5-cycle mean",
+      "mean_abs_shap": 2.0147106712197136
+    },
+    {
+      "feature": "s14_mean5",
+      "description": "Corrected core speed (NRc), 5-cycle mean",
+      "mean_abs_shap": 1.9720064818686651
+    }
+  ],
+  "train_seconds": 764.2,
+  "config": {
+    "subset": "FD003",
+    "data_dir": "data/raw",
+    "out_dir": "artifacts",
+    "seed": 0,
+    "cap": 125,
+    "horizon": 30,
+    "early_ok": 60,
+    "healthy_rul": 125,
+    "cnn_window": 30,
+    "cnn_epochs": 20,
+    "ae_epochs": 40,
+    "cost_missed": 100.0,
+    "cost_false_alarm": 10.0,
+    "max_far": 0.05,
+    "device": "cpu",
+    "mlflow": true
+  },
+  "serving_detector": "isolation_forest",
+  "serving_alarm_signal": "gbm_rul"
+}

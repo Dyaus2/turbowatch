@@ -1,0 +1,198 @@
+{
+  "FD001": {
+    "table": [
+      {
+        "metric": "RUL RMSE \u2014 gradient boosting (cycles)",
+        "test": "16.26 \u00b1 0.66",
+        "holdout": "15.94 \u00b1 1.50"
+      },
+      {
+        "metric": "RUL RMSE \u2014 1D-CNN (cycles)",
+        "test": "15.46 \u00b1 0.61",
+        "holdout": "16.62 \u00b1 0.79"
+      },
+      {
+        "metric": "PHM08 score \u2014 gradient boosting",
+        "test": "455 \u00b1 70",
+        "holdout": "\u2013"
+      },
+      {
+        "metric": "Alarm detection rate",
+        "test": "97 \u00b1 5%",
+        "holdout": "100 \u00b1 0%"
+      },
+      {
+        "metric": "False-alarm rate (engines)",
+        "test": "2 \u00b1 2%",
+        "holdout": "8 \u00b1 5%"
+      },
+      {
+        "metric": "Median warning before failure (cycles)",
+        "test": "36 \u00b1 5",
+        "holdout": "37 \u00b1 5"
+      },
+      {
+        "metric": "P10\u2013P90 interval coverage (nominal 80%)",
+        "test": "66 \u00b1 3%",
+        "holdout": "\u2013"
+      }
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "gbm_test_rmse": 16.259296293754847,
+    "cnn_test_rmse": 15.45769217842473,
+    "gbm_test_phm08": 455.27605762227756,
+    "alarm_test_detection": 0.968,
+    "alarm_test_far": 0.024,
+    "alarm_test_median_lead": 36.4
+  },
+  "FD002": {
+    "table": [
+      {
+        "metric": "RUL RMSE \u2014 gradient boosting (cycles)",
+        "test": "14.94",
+        "holdout": "16.86"
+      },
+      {
+        "metric": "RUL RMSE \u2014 1D-CNN (cycles)",
+        "test": "16.12",
+        "holdout": "19.83"
+      },
+      {
+        "metric": "PHM08 score \u2014 gradient boosting",
+        "test": "1056",
+        "holdout": "\u2013"
+      },
+      {
+        "metric": "Alarm detection rate",
+        "test": "97%",
+        "holdout": "100%"
+      },
+      {
+        "metric": "False-alarm rate (engines)",
+        "test": "0%",
+        "holdout": "0%"
+      },
+      {
+        "metric": "Median warning before failure (cycles)",
+        "test": "28",
+        "holdout": "25"
+      },
+      {
+        "metric": "P10\u2013P90 interval coverage (nominal 80%)",
+        "test": "81%",
+        "holdout": "\u2013"
+      }
+    ],
+    "seeds": [
+      0
+    ],
+    "gbm_test_rmse": 14.936787347010785,
+    "cnn_test_rmse": 16.121871030283582,
+    "gbm_test_phm08": 1056.3100545448265,
+    "alarm_test_detection": 0.9672131147540983,
+    "alarm_test_far": 0.003861003861003861,
+    "alarm_test_median_lead": 28.0
+  },
+  "FD003": {
+    "table": [
+      {
+        "metric": "RUL RMSE \u2014 gradient boosting (cycles)",
+        "test": "15.16",
+        "holdout": "15.24"
+      },
+      {
+        "metric": "RUL RMSE \u2014 1D-CNN (cycles)",
+        "test": "16.32",
+        "holdout": "15.71"
+      },
+      {
+        "metric": "PHM08 score \u2014 gradient boosting",
+        "test": "544",
+        "holdout": "\u2013"
+      },
+      {
+        "metric": "Alarm detection rate",
+        "test": "95%",
+        "holdout": "100%"
+      },
+      {
+        "metric": "False-alarm rate (engines)",
+        "test": "0%",
+        "holdout": "7%"
+      },
+      {
+        "metric": "Median warning before failure (cycles)",
+        "test": "38",
+        "holdout": "36"
+      },
+      {
+        "metric": "P10\u2013P90 interval coverage (nominal 80%)",
+        "test": "62%",
+        "holdout": "\u2013"
+      }
+    ],
+    "seeds": [
+      0
+    ],
+    "gbm_test_rmse": 15.15550224685791,
+    "cnn_test_rmse": 16.322971618962367,
+    "gbm_test_phm08": 543.7246915771817,
+    "alarm_test_detection": 0.95,
+    "alarm_test_far": 0.0,
+    "alarm_test_median_lead": 38.0
+  },
+  "FD004": {
+    "table": [
+      {
+        "metric": "RUL RMSE \u2014 gradient boosting (cycles)",
+        "test": "16.50",
+        "holdout": "15.87"
+      },
+      {
+        "metric": "RUL RMSE \u2014 1D-CNN (cycles)",
+        "test": "17.16",
+        "holdout": "16.47"
+      },
+      {
+        "metric": "PHM08 score \u2014 gradient boosting",
+        "test": "1429",
+        "holdout": "\u2013"
+      },
+      {
+        "metric": "Alarm detection rate",
+        "test": "81%",
+        "holdout": "97%"
+      },
+      {
+        "metric": "False-alarm rate (engines)",
+        "test": "1%",
+        "holdout": "5%"
+      },
+      {
+        "metric": "Median warning before failure (cycles)",
+        "test": "22",
+        "holdout": "21"
+      },
+      {
+        "metric": "P10\u2013P90 interval coverage (nominal 80%)",
+        "test": "73%",
+        "holdout": "\u2013"
+      }
+    ],
+    "seeds": [
+      0
+    ],
+    "gbm_test_rmse": 16.50088932049862,
+    "cnn_test_rmse": 17.16365671765708,
+    "gbm_test_phm08": 1428.914720595906,
+    "alarm_test_detection": 0.8113207547169812,
+    "alarm_test_far": 0.008064516129032258,
+    "alarm_test_median_lead": 22.0
+  }
+}

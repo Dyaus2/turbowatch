@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+data/raw/
+data/processed/
+mlruns/
+mlartifacts/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+frontend/dist/
+artifacts/*.pt.tmp
+*.log
+.env
+artifacts/FD002/
+artifacts/FD004/
+artifacts/_seed*/

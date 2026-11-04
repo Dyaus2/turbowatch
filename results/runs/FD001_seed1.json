@@ -1,0 +1,258 @@
+{
+  "subset": "FD001",
+  "n_engines": {
+    "fit": 70,
+    "calib": 15,
+    "holdout": 15,
+    "test": 100
+  },
+  "gbm": {
+    "test_rmse": 15.892759487736665,
+    "test_phm08": 391.6243974199411,
+    "test_p10_p90_coverage": 0.63,
+    "holdout_rmse_all_cycles": 14.204824404385269
+  },
+  "cnn": {
+    "test_rmse": 15.572742895526773,
+    "test_phm08": 486.2443687797076,
+    "holdout_rmse_all_cycles": 16.55300019999244,
+    "epochs": 20,
+    "final_train_mse": 110.83124096526642
+  },
+  "health": {
+    "isolation_forest": {
+      "holdout_brier": 0.061458627973765126,
+      "holdout_ece": 0.060682379952622045
+    },
+    "autoencoder": {
+      "holdout_brier": 0.12312656287309129,
+      "holdout_ece": 0.06875162732707354
+    }
+  },
+  "alarms": {
+    "isolation_forest": {
+      "min_cost": {
+        "policy": {
+          "threshold": 0.5053254223854402,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 0.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 0.9333333333333333,
+          "false_alarm_rate": 0.06666666666666667,
+          "median_lead_cycles": 19.5,
+          "missed": 1,
+          "cost": 110.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 25,
+          "detection_rate": 0.56,
+          "false_alarm_rate": 0.02,
+          "median_lead_cycles": 25.5,
+          "missed": 11,
+          "cost": 1120.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": 0.5053254223854402,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 0.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 0.9333333333333333,
+          "false_alarm_rate": 0.06666666666666667,
+          "median_lead_cycles": 19.5,
+          "missed": 1,
+          "cost": 110.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 25,
+          "detection_rate": 0.56,
+          "false_alarm_rate": 0.02,
+          "median_lead_cycles": 25.5,
+          "missed": 11,
+          "cost": 1120.0
+        }
+      }
+    },
+    "autoencoder": {
+      "min_cost": {
+        "policy": {
+          "threshold": 0.06600887297092115,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 150.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 1.0,
+          "median_lead_cycles": 60.0,
+          "missed": 0,
+          "cost": 150.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 25,
+          "detection_rate": 0.96,
+          "false_alarm_rate": 1.0,
+          "median_lead_cycles": 55.0,
+          "missed": 1,
+          "cost": 1100.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": 0.9273861924124512,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 600.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 0.13333333333333333,
+          "false_alarm_rate": 0.06666666666666667,
+          "median_lead_cycles": 35.0,
+          "missed": 13,
+          "cost": 1310.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 25,
+          "detection_rate": 0.08,
+          "false_alarm_rate": 0.08,
+          "median_lead_cycles": 40.5,
+          "missed": 23,
+          "cost": 2380.0
+        }
+      }
+    },
+    "gbm_rul": {
+      "min_cost": {
+        "policy": {
+          "threshold": -44.71301255803956,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 0.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 0.06666666666666667,
+          "median_lead_cycles": 39.0,
+          "missed": 0,
+          "cost": 10.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 25,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 0.04,
+          "median_lead_cycles": 40.0,
+          "missed": 0,
+          "cost": 40.0
+        }
+      },
+      "far_constrained": {
+        "policy": {
+          "threshold": -44.71301255803956,
+          "k": 1,
+          "n": 1
+        },
+        "calib_cost": 0.0,
+        "holdout": {
+          "engines": 15,
+          "positive_engines": 15,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 0.06666666666666667,
+          "median_lead_cycles": 39.0,
+          "missed": 0,
+          "cost": 10.0
+        },
+        "test": {
+          "engines": 100,
+          "positive_engines": 25,
+          "detection_rate": 1.0,
+          "false_alarm_rate": 0.04,
+          "median_lead_cycles": 40.0,
+          "missed": 0,
+          "cost": 40.0
+        }
+      }
+    }
+  },
+  "shap_global_top": [
+    {
+      "feature": "cycle",
+      "description": "Engine age (cycles)",
+      "mean_abs_shap": 10.30613856604019
+    },
+    {
+      "feature": "s3_mean15",
+      "description": "HPC outlet temperature (T30), 15-cycle mean",
+      "mean_abs_shap": 8.031113978769294
+    },
+    {
+      "feature": "s4_mean5",
+      "description": "LPT outlet temperature (T50), 5-cycle mean",
+      "mean_abs_shap": 5.8354221393461065
+    },
+    {
+      "feature": "s11_mean5",
+      "description": "HPC outlet static pressure (Ps30), 5-cycle mean",
+      "mean_abs_shap": 3.28436749144916
+    },
+    {
+      "feature": "s6_ewm",
+      "description": "Bypass-duct pressure (P15), smoothed level",
+      "mean_abs_shap": 2.8498879623029483
+    },
+    {
+      "feature": "s15_mean5",
+      "description": "Bypass ratio (BPR), 5-cycle mean",
+      "mean_abs_shap": 2.7630767863704544
+    },
+    {
+      "feature": "s14_ewm",
+      "description": "Corrected core speed (NRc), smoothed level",
+      "mean_abs_shap": 1.8057477822044852
+    },
+    {
+      "feature": "s7_mean5",
+      "description": "HPC outlet pressure (P30), 5-cycle mean",
+      "mean_abs_shap": 1.4447715947193074
+    }
+  ],
+  "train_seconds": 48.3,
+  "config": {
+    "subset": "FD001",
+    "data_dir": "data/raw",
+    "out_dir": "artifacts/_seed1",
+    "seed": 1,
+    "cap": 125,
+    "horizon": 30,
+    "early_ok": 60,
+    "healthy_rul": 125,
+    "cnn_window": 30,
+    "cnn_epochs": 20,
+    "ae_epochs": 40,
+    "cost_missed": 100.0,
+    "cost_false_alarm": 10.0,
+    "max_far": 0.05,
+    "mlflow": true
+  },
+  "serving_detector": "isolation_forest",
+  "serving_alarm_signal": "gbm_rul"
+}
