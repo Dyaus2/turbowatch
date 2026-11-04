@@ -16,7 +16,11 @@ export const SPEEDS = [1, 4, 8, 16, 32];
 
 /** Fleet clock for the replay: every engine exposes only the cycles it had observed by `cycle`. */
 export function ReplayProvider({ maxCycle, children }: { maxCycle: number; children: ReactNode }) {
-  const [cycle, setCycleState] = useState(1);
+  // start mid-life so first-time visitors immediately see engines degrade and alarms appear (?cycle=N overrides)
+  const [cycle, setCycleState] = useState(() => {
+    const q = Number(new URLSearchParams(location.search).get("cycle"));
+    return Number.isFinite(q) && q >= 1 ? Math.min(q, maxCycle) : Math.min(120, maxCycle);
+  });
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(8);
   const timer = useRef<number | null>(null);
